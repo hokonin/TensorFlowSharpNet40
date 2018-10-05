@@ -22,7 +22,9 @@ namespace TensorFlow
 		/// <param name="session">Session instance</param>
 		public QueueBase (TFSession session)
 		{
-			Session = session ?? throw new ArgumentNullException (nameof (session));
+            if (session == null)
+                throw new ArgumentNullException (/*nameof*/ ("session"));
+            Session = session;
 		}
 
 		/// <summary>
@@ -121,7 +123,9 @@ namespace TensorFlow
 		public PaddingFIFOQueue (TFSession session, TFDataType [] componentTypes, TFShape [] shapes, int? capacity = null, string container = null, string operationName = null)
 			: base (session)
 		{
-			_componentTypes = componentTypes ?? throw new ArgumentNullException (nameof (componentTypes));
+            if (componentTypes == null)
+                throw new ArgumentNullException (/*nameof*/ ("componentTypes"));
+            _componentTypes = componentTypes;
 			_handle = Session.Graph.PaddingFIFOQueueV2 (
 					componentTypes,
 					shapes,
@@ -189,7 +193,7 @@ namespace TensorFlow
 		public TFTensor [] EnqueueExecute (TFOutput [] components, TFTensor [] inputValues, long? timeout_ms = null, string operationName = null)
 		{
 			TFOperation enqueueOp = Enqueue (components, timeout_ms, operationName);
-			TFTensor [] tensors = Session.Run (components, inputValues, Array.Empty<TFOutput> (), new [] { enqueueOp });
+			TFTensor [] tensors = Session.Run (components, inputValues, new TFOutput[0], new [] { enqueueOp });
 			return tensors;
 		}
 
@@ -244,7 +248,7 @@ namespace TensorFlow
 		public TFTensor [] DequeueExecute (long? timeout_ms = null, string operationName = null)
 		{
 			TFOutput [] values = Session.Graph.QueueDequeueV2 (_handle, _componentTypes, timeout_ms, operationName);
-			TFTensor [] tensors = Session.Run (Array.Empty<TFOutput> (), Array.Empty<TFTensor> (), values);
+			TFTensor [] tensors = Session.Run (new TFOutput[0], new TFTensor[0], values);
 			return tensors;
 		}
 
@@ -287,7 +291,7 @@ namespace TensorFlow
 		public int GetSizeExecute (string operationName = null)
 		{
 			TFOutput sizeOutput = GetSize (operationName);
-			TFTensor [] tensors = Session.Run (Array.Empty<TFOutput> (), Array.Empty<TFTensor> (), new TFOutput [] { sizeOutput });
+			TFTensor [] tensors = Session.Run (new TFOutput[0], new TFTensor[0], new TFOutput [] { sizeOutput });
 			return (int)tensors.First ().GetValue ();
 		}
 	}

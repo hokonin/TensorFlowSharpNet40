@@ -265,7 +265,7 @@ namespace TensorFlow
 		public unsafe TFTensor (Array array)
 		{
 			if (array == null)
-				throw new ArgumentNullException (nameof (array));
+				throw new ArgumentNullException (/*nameof*/ ("array"));
 
 			// Ensure that, if we have arrays of arrays, we can handle them accordingly:
 			if (isJagged (array.GetType ())) {
@@ -329,7 +329,7 @@ namespace TensorFlow
 					size = 16;
 					dt = TFDataType.Complex128;
 				} else
-					throw new ArgumentException ($"The data type {t} is not supported");
+					throw new ArgumentException (String.Format("The data type {0} is not supported", t));
 				break;
 			}
 
@@ -500,7 +500,7 @@ namespace TensorFlow
 		public unsafe static TFTensor CreateString (byte [] buffer)
 		{
 			if (buffer == null)
-				throw new ArgumentNullException (nameof (buffer));
+				throw new ArgumentNullException (/*nameof*/ ("buffer"));
 			//
 			// TF_STRING tensors are encoded with a table of 8-byte offsets followed by
 			// TF_StringEncode-encoded bytes.
@@ -543,7 +543,7 @@ namespace TensorFlow
 		static IntPtr SetupTensor (TFDataType dt, TFShape shape, Array data, int start, int count, int size)
 		{
 			if (shape == null)
-				throw new ArgumentNullException (nameof (shape));
+				throw new ArgumentNullException (/*nameof*/ ("shape"));
 			return SetupTensor (dt, shape.dims, data, start, count, size);
 		}
 		
@@ -723,7 +723,7 @@ namespace TensorFlow
 		/// Returns the data type for the tensor.
 		/// </summary>
 		/// <value>The type of the tensor.</value>
-		public TFDataType TensorType => TF_TensorType (handle);
+		public TFDataType TensorType { get { return TF_TensorType (handle); } }
 
 		// extern int TF_NumDims (const TF_Tensor *);
 		[DllImport (NativeBinding.TensorFlowLibrary)]
@@ -735,7 +735,7 @@ namespace TensorFlow
 		/// <remarks>
 		/// For single-dimension tensors the return is 1, 2 dimensions is 2 and so on.
 		/// </remarks>
-		public int NumDims => TF_NumDims (handle);
+		public int NumDims { get { return TF_NumDims (handle); } }
 
 		// extern int64_t TF_Dim (const TF_Tensor *tensor, int dim_index);
 		[DllImport (NativeBinding.TensorFlowLibrary)]
@@ -760,7 +760,7 @@ namespace TensorFlow
 		[DllImport (NativeBinding.TensorFlowLibrary)]
 		static extern unsafe size_t TF_TensorByteSize (TF_Tensor tensor);
 
-		public size_t TensorByteSize => TF_TensorByteSize (handle);
+		public size_t TensorByteSize { get { return TF_TensorByteSize (handle); } }
 
 		// extern void * TF_TensorData (const TF_Tensor *);
 		[DllImport (NativeBinding.TensorFlowLibrary)]
@@ -774,7 +774,7 @@ namespace TensorFlow
 		/// data as described by the DataType property.   The amount of data
 		/// is given by the the TensorByteSize property.
 		/// </remarks>
-		public IntPtr Data => TF_TensorData (handle);
+        public IntPtr Data { get { return TF_TensorData(handle); } }
 
 		/// <summary>
 		/// Returns the tensor shape, this is an array whose size determines the number of dimensions on the tensor, and each element is the size of the dimension
@@ -859,10 +859,11 @@ namespace TensorFlow
 			if (type == typeof (Complex))
 				return TFDataType.Complex128;
 
-			throw new ArgumentOutOfRangeException (nameof(type), $"The given type could not be mapped to an existing {nameof(TFDataType)}.");
+            throw new ArgumentOutOfRangeException(/*nameof*/("type"), String.Format("The given type could not be mapped to an existing {0}.", /*nameof*/("TFDataType")));
 		}
 
-		internal static (TFDataType dt, long size) TensorTypeAndSizeFromType (Type t)
+        [return: System.Runtime.CompilerServices.TupleElementNames(new[] { "dt", "size" })]
+		internal static ValueTuple<TFDataType, long> TensorTypeAndSizeFromType (Type t)
 		{
 			var tc = Type.GetTypeCode (t);
 			TFDataType dt;
@@ -910,10 +911,10 @@ namespace TensorFlow
 					size = 16;
 					dt = TFDataType.Complex128;
 				} else
-					throw new ArgumentException ($"The data type {t} is not supported");
+					throw new ArgumentException (String.Format("The data type {0} is not supported", t));
 				break;
 			}
-			return (dt, size);
+			return ValueTuple.Create<TFDataType, long>(dt, size);
 		}
 
 		internal static unsafe object FetchSimple (TFDataType dt, object data)
@@ -1007,10 +1008,15 @@ namespace TensorFlow
 
 		unsafe static void Copy (IntPtr src, void* target, int size)
 		{
-			Buffer.MemoryCopy ((void*)src, target, size, size);
-		}
+            //Buffer.MemoryCopy ((void*)src, target, size, size);
+            using (System.IO.UnmanagedMemoryStream streamSrc = new System.IO.UnmanagedMemoryStream((byte*)src, size))
+            using (System.IO.UnmanagedMemoryStream streamDst = new System.IO.UnmanagedMemoryStream((byte*)target, size, size, System.IO.FileAccess.ReadWrite))
+            {
+                streamSrc.CopyTo(streamDst);
+            }
+        }
 
-		static unsafe void FetchFlatArray (Array target, TFDataType dt, IntPtr data)
+        static unsafe void FetchFlatArray (Array target, TFDataType dt, IntPtr data)
 		{
 			int len = target.Length;
 			switch (dt) {

@@ -769,7 +769,8 @@ namespace TensorFlow {
 		///   the sampled candidates must be chosen independently of the context and of the
 		///   true labels.
 		/// </remarks>
-		public (TFOutput sampled_candidates, TFOutput true_expected_count, TFOutput sampled_expected_count) AllCandidateSampler (TFOutput true_classes, long num_true, long num_sampled, bool unique, long? seed = null, long? seed2 = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "sampled_candidates", "true_expected_count", "sampled_expected_count" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> AllCandidateSampler (TFOutput true_classes, long num_true, long num_sampled, bool unique, long? seed = null, long? seed2 = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "AllCandidateSampler", MakeName ("AllCandidateSampler", operName));
 			desc.AddInput (true_classes);
@@ -790,7 +791,7 @@ namespace TensorFlow {
 			var sampled_candidates = new TFOutput (op, _idx++);
 			var true_expected_count = new TFOutput (op, _idx++);
 			var sampled_expected_count = new TFOutput (op, _idx++);
-			return (sampled_candidates, true_expected_count, sampled_expected_count);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(sampled_candidates, true_expected_count, sampled_expected_count);
 		}
 
 		/// <summary>
@@ -3029,7 +3030,8 @@ namespace TensorFlow {
 		///   information about the batch in which each element was originally inserted
 		///   into the barrier.
 		/// </remarks>
-		public (TFOutput indices, TFOutput keys, TFOutput[] values) BarrierTakeMany (TFOutput handle, TFOutput num_elements, TFDataType[] component_types, bool? allow_small_batch = null, bool? wait_for_incomplete = null, long? timeout_ms = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "indices", "keys", "values" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput[]> BarrierTakeMany (TFOutput handle, TFOutput num_elements, TFDataType[] component_types, bool? allow_small_batch = null, bool? wait_for_incomplete = null, long? timeout_ms = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "BarrierTakeMany", MakeName ("BarrierTakeMany", operName));
 			desc.AddInput (handle);
@@ -3057,7 +3059,7 @@ namespace TensorFlow {
 			for (int i = 0; i < _n; i++)
 				values [i] = new TFOutput (op, _idx++);
 			
-			return (indices, keys, values);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput[]>(indices, keys, values);
 		}
 
 		/// <summary>
@@ -3136,7 +3138,8 @@ namespace TensorFlow {
 		///   empty, the op name will be used as the shared name.
 		///   T: the types of tensors to be batched.
 		/// </remarks>
-		public (TFOutput[] batched_tensors, TFOutput batch_index, TFOutput id) Batch (TFOutput[] in_tensors, long num_batch_threads, long max_batch_size, long batch_timeout_micros, long grad_timeout_micros, long? max_enqueued_batches = null, long[] allowed_batch_sizes = null, string container = null, string shared_name = null, string batching_queue = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "batched_tensors", "batch_index", "id" })]
+		public ValueTuple<TFOutput[], TFOutput, TFOutput> Batch (TFOutput[] in_tensors, long num_batch_threads, long max_batch_size, long batch_timeout_micros, long grad_timeout_micros, long? max_enqueued_batches = null, long[] allowed_batch_sizes = null, string container = null, string shared_name = null, string batching_queue = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "Batch", MakeName ("Batch", operName));
 			desc.AddInputs (in_tensors);
@@ -3172,7 +3175,7 @@ namespace TensorFlow {
 			
 			var batch_index = new TFOutput (op, _idx++);
 			var id = new TFOutput (op, _idx++);
-			return (batched_tensors, batch_index, id);
+			return ValueTuple.Create<TFOutput[], TFOutput, TFOutput>(batched_tensors, batch_index, id);
 		}
 
 		/// <summary>
@@ -3380,7 +3383,8 @@ namespace TensorFlow {
 		/// <remarks>
 		///   This op is deprecated. See <c>tf.nn.batch_normalization</c>.
 		/// </remarks>
-		public (TFOutput dx, TFOutput dm, TFOutput dv, TFOutput db, TFOutput dg) BatchNormWithGlobalNormalizationGrad (TFOutput t, TFOutput m, TFOutput v, TFOutput gamma, TFOutput backprop, float variance_epsilon, bool scale_after_normalization, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "dx", "dm", "dv", "db", "dg" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput, TFOutput, TFOutput> BatchNormWithGlobalNormalizationGrad (TFOutput t, TFOutput m, TFOutput v, TFOutput gamma, TFOutput backprop, float variance_epsilon, bool scale_after_normalization, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "BatchNormWithGlobalNormalizationGrad", MakeName ("BatchNormWithGlobalNormalizationGrad", operName));
 			desc.AddInput (t);
@@ -3400,7 +3404,7 @@ namespace TensorFlow {
 			var dv = new TFOutput (op, _idx++);
 			var db = new TFOutput (op, _idx++);
 			var dg = new TFOutput (op, _idx++);
-			return (dx, dm, dv, db, dg);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput, TFOutput, TFOutput>(dx, dm, dv, db, dg);
 		}
 
 		/// <summary>
@@ -4137,7 +4141,8 @@ namespace TensorFlow {
 		/// <remarks>
 		///   This is typically used by gradient computations for a broadcasting operation.
 		/// </remarks>
-		public (TFOutput r0, TFOutput r1) BroadcastGradientArgs (TFOutput s0, TFOutput s1, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "r0", "r1" })]
+		public ValueTuple<TFOutput, TFOutput> BroadcastGradientArgs (TFOutput s0, TFOutput s1, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "BroadcastGradientArgs", MakeName ("BroadcastGradientArgs", operName));
 			desc.AddInput (s0);
@@ -4149,7 +4154,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var r0 = new TFOutput (op, _idx++);
 			var r1 = new TFOutput (op, _idx++);
-			return (r0, r1);
+			return ValueTuple.Create<TFOutput, TFOutput>(r0, r1);
 		}
 
 		/// <summary>
@@ -4614,7 +4619,8 @@ namespace TensorFlow {
 		///   the effect of 'removing' the sampled labels that match the true labels by
 		///   making the classifier sure that they are sampled labels.
 		/// </remarks>
-		public (TFOutput indices, TFOutput ids, TFOutput weights) ComputeAccidentalHits (TFOutput true_classes, TFOutput sampled_candidates, long num_true, long? seed = null, long? seed2 = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "indices", "ids", "weights" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> ComputeAccidentalHits (TFOutput true_classes, TFOutput sampled_candidates, long num_true, long? seed = null, long? seed2 = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "ComputeAccidentalHits", MakeName ("ComputeAccidentalHits", operName));
 			desc.AddInput (true_classes);
@@ -4634,7 +4640,7 @@ namespace TensorFlow {
 			var indices = new TFOutput (op, _idx++);
 			var ids = new TFOutput (op, _idx++);
 			var weights = new TFOutput (op, _idx++);
-			return (indices, ids, weights);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(indices, ids, weights);
 		}
 
 		/// <summary>
@@ -6085,7 +6091,8 @@ namespace TensorFlow {
 		///   "A B" is returned if merge_repeated = True but "A B B B B" is
 		///   returned if merge_repeated = False.
 		/// </remarks>
-		public (TFOutput[] decoded_indices, TFOutput[] decoded_values, TFOutput[] decoded_shape, TFOutput log_probability) CTCBeamSearchDecoder (TFOutput inputs, TFOutput sequence_length, long beam_width, long top_paths, bool? merge_repeated = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "decoded_indices", "decoded_values", "decoded_shape", "log_probability" })]
+		public ValueTuple<TFOutput[], TFOutput[], TFOutput[], TFOutput> CTCBeamSearchDecoder (TFOutput inputs, TFOutput sequence_length, long beam_width, long top_paths, bool? merge_repeated = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "CTCBeamSearchDecoder", MakeName ("CTCBeamSearchDecoder", operName));
 			desc.AddInput (inputs);
@@ -6117,7 +6124,7 @@ namespace TensorFlow {
 				decoded_shape [i] = new TFOutput (op, _idx++);
 			
 			var log_probability = new TFOutput (op, _idx++);
-			return (decoded_indices, decoded_values, decoded_shape, log_probability);
+			return ValueTuple.Create<TFOutput[], TFOutput[], TFOutput[], TFOutput>(decoded_indices, decoded_values, decoded_shape, log_probability);
 		}
 
 		/// <summary>
@@ -6159,7 +6166,8 @@ namespace TensorFlow {
 		///   time and batch corresponds to the blank, index <c>(num_classes - 1)</c>, no new
 		///   element is emitted.
 		/// </remarks>
-		public (TFOutput decoded_indices, TFOutput decoded_values, TFOutput decoded_shape, TFOutput log_probability) CTCGreedyDecoder (TFOutput inputs, TFOutput sequence_length, bool? merge_repeated = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "decoded_indices", "decoded_values", "decoded_shape", "log_probability" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput, TFOutput> CTCGreedyDecoder (TFOutput inputs, TFOutput sequence_length, bool? merge_repeated = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "CTCGreedyDecoder", MakeName ("CTCGreedyDecoder", operName));
 			desc.AddInput (inputs);
@@ -6176,7 +6184,7 @@ namespace TensorFlow {
 			var decoded_values = new TFOutput (op, _idx++);
 			var decoded_shape = new TFOutput (op, _idx++);
 			var log_probability = new TFOutput (op, _idx++);
-			return (decoded_indices, decoded_values, decoded_shape, log_probability);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput, TFOutput>(decoded_indices, decoded_values, decoded_shape, log_probability);
 		}
 
 		/// <summary>
@@ -6227,7 +6235,8 @@ namespace TensorFlow {
 		///   the gradient.  This class performs the softmax operation for you, so inputs
 		///   should be e.g. linear projections of outputs by an LSTM.
 		/// </remarks>
-		public (TFOutput loss, TFOutput gradient) CTCLoss (TFOutput inputs, TFOutput labels_indices, TFOutput labels_values, TFOutput sequence_length, bool? preprocess_collapse_repeated = null, bool? ctc_merge_repeated = null, bool? ignore_longer_outputs_than_inputs = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "loss", "gradient" })]
+		public ValueTuple<TFOutput, TFOutput> CTCLoss (TFOutput inputs, TFOutput labels_indices, TFOutput labels_values, TFOutput sequence_length, bool? preprocess_collapse_repeated = null, bool? ctc_merge_repeated = null, bool? ignore_longer_outputs_than_inputs = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "CTCLoss", MakeName ("CTCLoss", operName));
 			desc.AddInput (inputs);
@@ -6250,7 +6259,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var loss = new TFOutput (op, _idx++);
 			var gradient = new TFOutput (op, _idx++);
-			return (loss, gradient);
+			return ValueTuple.Create<TFOutput, TFOutput>(loss, gradient);
 		}
 
 		/// <summary>
@@ -7412,7 +7421,8 @@ namespace TensorFlow {
 		///   number of samples. For example, a ten-sample-long stereo WAV file should give an
 		///   output shape of [10, 2].
 		/// </remarks>
-		public (TFOutput audio, TFOutput sample_rate) DecodeWav (TFOutput contents, long? desired_channels = null, long? desired_samples = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "audio", "sample_rate" })]
+		public ValueTuple<TFOutput, TFOutput> DecodeWav (TFOutput contents, long? desired_channels = null, long? desired_samples = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "DecodeWav", MakeName ("DecodeWav", operName));
 			desc.AddInput (contents);
@@ -7429,7 +7439,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var audio = new TFOutput (op, _idx++);
 			var sample_rate = new TFOutput (op, _idx++);
-			return (audio, sample_rate);
+			return ValueTuple.Create<TFOutput, TFOutput>(audio, sample_rate);
 		}
 
 		/// <summary>
@@ -7492,7 +7502,8 @@ namespace TensorFlow {
 		///   dimension contains the result of <c>set_operation</c> applied to the corresponding
 		///   <c>[0...n-1]</c> dimension of <c>set</c>.
 		/// </remarks>
-		public (TFOutput result_indices, TFOutput result_values, TFOutput result_shape) DenseToDenseSetOperation (TFOutput set1, TFOutput set2, string set_operation, bool? validate_indices = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "result_indices", "result_values", "result_shape" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> DenseToDenseSetOperation (TFOutput set1, TFOutput set2, string set_operation, bool? validate_indices = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "DenseToDenseSetOperation", MakeName ("DenseToDenseSetOperation", operName));
 			desc.AddInput (set1);
@@ -7509,7 +7520,7 @@ namespace TensorFlow {
 			var result_indices = new TFOutput (op, _idx++);
 			var result_values = new TFOutput (op, _idx++);
 			var result_shape = new TFOutput (op, _idx++);
-			return (result_indices, result_values, result_shape);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(result_indices, result_values, result_shape);
 		}
 
 		/// <summary>
@@ -7608,7 +7619,8 @@ namespace TensorFlow {
 		///   dimension contains the result of <c>set_operation</c> applied to the corresponding
 		///   <c>[0...n-1]</c> dimension of <c>set</c>.
 		/// </remarks>
-		public (TFOutput result_indices, TFOutput result_values, TFOutput result_shape) DenseToSparseSetOperation (TFOutput set1, TFOutput set2_indices, TFOutput set2_values, TFOutput set2_shape, string set_operation, bool? validate_indices = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "result_indices", "result_values", "result_shape" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> DenseToSparseSetOperation (TFOutput set1, TFOutput set2_indices, TFOutput set2_values, TFOutput set2_shape, string set_operation, bool? validate_indices = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "DenseToSparseSetOperation", MakeName ("DenseToSparseSetOperation", operName));
 			desc.AddInput (set1);
@@ -7627,7 +7639,7 @@ namespace TensorFlow {
 			var result_indices = new TFOutput (op, _idx++);
 			var result_values = new TFOutput (op, _idx++);
 			var result_shape = new TFOutput (op, _idx++);
-			return (result_indices, result_values, result_shape);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(result_indices, result_values, result_shape);
 		}
 
 		/// <summary>
@@ -8185,7 +8197,8 @@ namespace TensorFlow {
 		///   values = [1, 2, 3, 4, 5]
 		///   shape = [2 50]
 		/// </remarks>
-		public (TFOutput sparse_indices, TFOutput sparse_values, TFOutput sparse_shape) DeserializeManySparse (TFOutput serialized_sparse, TFDataType dtype, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "sparse_indices", "sparse_values", "sparse_shape" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> DeserializeManySparse (TFOutput serialized_sparse, TFDataType dtype, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "DeserializeManySparse", MakeName ("DeserializeManySparse", operName));
 			desc.AddInput (serialized_sparse);
@@ -8198,7 +8211,7 @@ namespace TensorFlow {
 			var sparse_indices = new TFOutput (op, _idx++);
 			var sparse_values = new TFOutput (op, _idx++);
 			var sparse_shape = new TFOutput (op, _idx++);
-			return (sparse_indices, sparse_values, sparse_shape);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(sparse_indices, sparse_values, sparse_shape);
 		}
 
 		/// <summary>
@@ -8264,7 +8277,8 @@ namespace TensorFlow {
 		///   values = [1, 2, 3, 4, 5]
 		///   shape = [2 50]
 		/// </remarks>
-		public (TFOutput sparse_indices, TFOutput sparse_values, TFOutput sparse_shape) DeserializeSparse (TFOutput serialized_sparse, TFDataType dtype, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "sparse_indices", "sparse_values", "sparse_shape" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> DeserializeSparse (TFOutput serialized_sparse, TFDataType dtype, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "DeserializeSparse", MakeName ("DeserializeSparse", operName));
 			desc.AddInput (serialized_sparse);
@@ -8277,7 +8291,7 @@ namespace TensorFlow {
 			var sparse_indices = new TFOutput (op, _idx++);
 			var sparse_values = new TFOutput (op, _idx++);
 			var sparse_shape = new TFOutput (op, _idx++);
-			return (sparse_indices, sparse_values, sparse_shape);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(sparse_indices, sparse_values, sparse_shape);
 		}
 
 		/// <summary>
@@ -9982,7 +9996,8 @@ namespace TensorFlow {
 		///   <c>sum(gradients * (inputs &amp;gt; max))</c>.
 		///   The TFOperation can be fetched from any of the TFOutputs returned in the tuple values, by fethching the Operation property.
 		/// </returns>
-		public (TFOutput backprops_wrt_input, TFOutput backprop_wrt_min, TFOutput backprop_wrt_max) FakeQuantWithMinMaxVarsGradient (TFOutput gradients, TFOutput inputs, TFOutput min, TFOutput max, long? num_bits = null, bool? narrow_range = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "backprops_wrt_input", "backprop_wrt_min", "backprop_wrt_max" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> FakeQuantWithMinMaxVarsGradient (TFOutput gradients, TFOutput inputs, TFOutput min, TFOutput max, long? num_bits = null, bool? narrow_range = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "FakeQuantWithMinMaxVarsGradient", MakeName ("FakeQuantWithMinMaxVarsGradient", operName));
 			desc.AddInput (gradients);
@@ -10003,7 +10018,7 @@ namespace TensorFlow {
 			var backprops_wrt_input = new TFOutput (op, _idx++);
 			var backprop_wrt_min = new TFOutput (op, _idx++);
 			var backprop_wrt_max = new TFOutput (op, _idx++);
-			return (backprops_wrt_input, backprop_wrt_min, backprop_wrt_max);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(backprops_wrt_input, backprop_wrt_min, backprop_wrt_max);
 		}
 
 		/// <summary>
@@ -10099,7 +10114,8 @@ namespace TensorFlow {
 		///   <c>sum_per_d(gradients * (inputs &amp;gt; max))</c>.
 		///   The TFOperation can be fetched from any of the TFOutputs returned in the tuple values, by fethching the Operation property.
 		/// </returns>
-		public (TFOutput backprops_wrt_input, TFOutput backprop_wrt_min, TFOutput backprop_wrt_max) FakeQuantWithMinMaxVarsPerChannelGradient (TFOutput gradients, TFOutput inputs, TFOutput min, TFOutput max, long? num_bits = null, bool? narrow_range = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "backprops_wrt_input", "backprop_wrt_min", "backprop_wrt_max" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> FakeQuantWithMinMaxVarsPerChannelGradient (TFOutput gradients, TFOutput inputs, TFOutput min, TFOutput max, long? num_bits = null, bool? narrow_range = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "FakeQuantWithMinMaxVarsPerChannelGradient", MakeName ("FakeQuantWithMinMaxVarsPerChannelGradient", operName));
 			desc.AddInput (gradients);
@@ -10120,7 +10136,7 @@ namespace TensorFlow {
 			var backprops_wrt_input = new TFOutput (op, _idx++);
 			var backprop_wrt_min = new TFOutput (op, _idx++);
 			var backprop_wrt_max = new TFOutput (op, _idx++);
-			return (backprops_wrt_input, backprop_wrt_min, backprop_wrt_max);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(backprops_wrt_input, backprop_wrt_min, backprop_wrt_max);
 		}
 
 		/// <summary>
@@ -10700,7 +10716,8 @@ namespace TensorFlow {
 		///   the sampled candidates must be chosen independently of the context and of the
 		///   true labels.
 		/// </remarks>
-		public (TFOutput sampled_candidates, TFOutput true_expected_count, TFOutput sampled_expected_count) FixedUnigramCandidateSampler (TFOutput true_classes, long num_true, long num_sampled, bool unique, long range_max, string vocab_file = null, float? distortion = null, long? num_reserved_ids = null, long? num_shards = null, long? shard = null, float[] unigrams = null, long? seed = null, long? seed2 = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "sampled_candidates", "true_expected_count", "sampled_expected_count" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> FixedUnigramCandidateSampler (TFOutput true_classes, long num_true, long num_sampled, bool unique, long range_max, string vocab_file = null, float? distortion = null, long? num_reserved_ids = null, long? num_shards = null, long? shard = null, float[] unigrams = null, long? seed = null, long? seed2 = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "FixedUnigramCandidateSampler", MakeName ("FixedUnigramCandidateSampler", operName));
 			desc.AddInput (true_classes);
@@ -10740,7 +10757,7 @@ namespace TensorFlow {
 			var sampled_candidates = new TFOutput (op, _idx++);
 			var true_expected_count = new TFOutput (op, _idx++);
 			var sampled_expected_count = new TFOutput (op, _idx++);
-			return (sampled_candidates, true_expected_count, sampled_expected_count);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(sampled_candidates, true_expected_count, sampled_expected_count);
 		}
 
 		/// <summary>
@@ -10897,7 +10914,8 @@ namespace TensorFlow {
 		///   generated, a mean operation is performed instead of a max operation in each
 		///   pooling region.
 		/// </remarks>
-		public (TFOutput output, TFOutput row_pooling_sequence, TFOutput col_pooling_sequence) FractionalAvgPool (TFOutput value, float[] pooling_ratio, bool? pseudo_random = null, bool? overlapping = null, bool? deterministic = null, long? seed = null, long? seed2 = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output", "row_pooling_sequence", "col_pooling_sequence" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> FractionalAvgPool (TFOutput value, float[] pooling_ratio, bool? pseudo_random = null, bool? overlapping = null, bool? deterministic = null, long? seed = null, long? seed2 = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "FractionalAvgPool", MakeName ("FractionalAvgPool", operName));
 			desc.AddInput (value);
@@ -10925,7 +10943,7 @@ namespace TensorFlow {
 			var output = new TFOutput (op, _idx++);
 			var row_pooling_sequence = new TFOutput (op, _idx++);
 			var col_pooling_sequence = new TFOutput (op, _idx++);
-			return (output, row_pooling_sequence, col_pooling_sequence);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(output, row_pooling_sequence, col_pooling_sequence);
 		}
 
 		/// <summary>
@@ -11080,7 +11098,8 @@ namespace TensorFlow {
 		///   For more details on fractional max pooling, see this paper:
 		///   [Benjamin Graham, Fractional Max-Pooling](http://arxiv.org/abs/1412.6071)
 		/// </remarks>
-		public (TFOutput output, TFOutput row_pooling_sequence, TFOutput col_pooling_sequence) FractionalMaxPool (TFOutput value, float[] pooling_ratio, bool? pseudo_random = null, bool? overlapping = null, bool? deterministic = null, long? seed = null, long? seed2 = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output", "row_pooling_sequence", "col_pooling_sequence" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> FractionalMaxPool (TFOutput value, float[] pooling_ratio, bool? pseudo_random = null, bool? overlapping = null, bool? deterministic = null, long? seed = null, long? seed2 = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "FractionalMaxPool", MakeName ("FractionalMaxPool", operName));
 			desc.AddInput (value);
@@ -11108,7 +11127,7 @@ namespace TensorFlow {
 			var output = new TFOutput (op, _idx++);
 			var row_pooling_sequence = new TFOutput (op, _idx++);
 			var col_pooling_sequence = new TFOutput (op, _idx++);
-			return (output, row_pooling_sequence, col_pooling_sequence);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(output, row_pooling_sequence, col_pooling_sequence);
 		}
 
 		/// <summary>
@@ -11224,7 +11243,8 @@ namespace TensorFlow {
 		///   Note that the size of 4D Tensors are defined by either "NHWC" or "NCHW".
 		///   The size of 1D Tensors matches the dimension C of the 4D Tensors.
 		/// </remarks>
-		public (TFOutput y, TFOutput batch_mean, TFOutput batch_variance, TFOutput reserve_space_1, TFOutput reserve_space_2) FusedBatchNorm (TFOutput x, TFOutput scale, TFOutput offset, TFOutput mean, TFOutput variance, float? epsilon = null, string data_format = null, bool? is_training = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "y", "batch_mean", "batch_variance", "reserve_space_1", "reserve_space_2" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput, TFOutput, TFOutput> FusedBatchNorm (TFOutput x, TFOutput scale, TFOutput offset, TFOutput mean, TFOutput variance, float? epsilon = null, string data_format = null, bool? is_training = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "FusedBatchNorm", MakeName ("FusedBatchNorm", operName));
 			desc.AddInput (x);
@@ -11251,7 +11271,7 @@ namespace TensorFlow {
 			var batch_variance = new TFOutput (op, _idx++);
 			var reserve_space_1 = new TFOutput (op, _idx++);
 			var reserve_space_2 = new TFOutput (op, _idx++);
-			return (y, batch_mean, batch_variance, reserve_space_1, reserve_space_2);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput, TFOutput, TFOutput>(y, batch_mean, batch_variance, reserve_space_1, reserve_space_2);
 		}
 
 		/// <summary>
@@ -11310,7 +11330,8 @@ namespace TensorFlow {
 		///   Note that the size of 4D Tensors are defined by either "NHWC" or "NCHW".
 		///   The size of 1D Tensors matches the dimension C of the 4D Tensors.
 		/// </remarks>
-		public (TFOutput x_backprop, TFOutput scale_backprop, TFOutput offset_backprop, TFOutput reserve_space_3, TFOutput reserve_space_4) FusedBatchNormGrad (TFOutput y_backprop, TFOutput x, TFOutput scale, TFOutput reserve_space_1, TFOutput reserve_space_2, float? epsilon = null, string data_format = null, bool? is_training = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "x_backprop", "scale_backprop", "offset_backprop", "reserve_space_3", "reserve_space_4" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput, TFOutput, TFOutput> FusedBatchNormGrad (TFOutput y_backprop, TFOutput x, TFOutput scale, TFOutput reserve_space_1, TFOutput reserve_space_2, float? epsilon = null, string data_format = null, bool? is_training = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "FusedBatchNormGrad", MakeName ("FusedBatchNormGrad", operName));
 			desc.AddInput (y_backprop);
@@ -11337,7 +11358,7 @@ namespace TensorFlow {
 			var offset_backprop = new TFOutput (op, _idx++);
 			var reserve_space_3 = new TFOutput (op, _idx++);
 			var reserve_space_4 = new TFOutput (op, _idx++);
-			return (x_backprop, scale_backprop, offset_backprop, reserve_space_3, reserve_space_4);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput, TFOutput, TFOutput>(x_backprop, scale_backprop, offset_backprop, reserve_space_3, reserve_space_4);
 		}
 
 		/// <summary>
@@ -11396,7 +11417,8 @@ namespace TensorFlow {
 		///   Note that the size of 4D Tensors are defined by either "NHWC" or "NCHW".
 		///   The size of 1D Tensors matches the dimension C of the 4D Tensors.
 		/// </remarks>
-		public (TFOutput x_backprop, TFOutput scale_backprop, TFOutput offset_backprop, TFOutput reserve_space_3, TFOutput reserve_space_4) FusedBatchNormGradV2 (TFOutput y_backprop, TFOutput x, TFOutput scale, TFOutput reserve_space_1, TFOutput reserve_space_2, float? epsilon = null, string data_format = null, bool? is_training = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "x_backprop", "scale_backprop", "offset_backprop", "reserve_space_3", "reserve_space_4" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput, TFOutput, TFOutput> FusedBatchNormGradV2 (TFOutput y_backprop, TFOutput x, TFOutput scale, TFOutput reserve_space_1, TFOutput reserve_space_2, float? epsilon = null, string data_format = null, bool? is_training = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "FusedBatchNormGradV2", MakeName ("FusedBatchNormGradV2", operName));
 			desc.AddInput (y_backprop);
@@ -11423,7 +11445,7 @@ namespace TensorFlow {
 			var offset_backprop = new TFOutput (op, _idx++);
 			var reserve_space_3 = new TFOutput (op, _idx++);
 			var reserve_space_4 = new TFOutput (op, _idx++);
-			return (x_backprop, scale_backprop, offset_backprop, reserve_space_3, reserve_space_4);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput, TFOutput, TFOutput>(x_backprop, scale_backprop, offset_backprop, reserve_space_3, reserve_space_4);
 		}
 
 		/// <summary>
@@ -11479,7 +11501,8 @@ namespace TensorFlow {
 		///   Note that the size of 4D Tensors are defined by either "NHWC" or "NCHW".
 		///   The size of 1D Tensors matches the dimension C of the 4D Tensors.
 		/// </remarks>
-		public (TFOutput y, TFOutput batch_mean, TFOutput batch_variance, TFOutput reserve_space_1, TFOutput reserve_space_2) FusedBatchNormV2 (TFOutput x, TFOutput scale, TFOutput offset, TFOutput mean, TFOutput variance, float? epsilon = null, string data_format = null, bool? is_training = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "y", "batch_mean", "batch_variance", "reserve_space_1", "reserve_space_2" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput, TFOutput, TFOutput> FusedBatchNormV2 (TFOutput x, TFOutput scale, TFOutput offset, TFOutput mean, TFOutput variance, float? epsilon = null, string data_format = null, bool? is_training = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "FusedBatchNormV2", MakeName ("FusedBatchNormV2", operName));
 			desc.AddInput (x);
@@ -11506,7 +11529,7 @@ namespace TensorFlow {
 			var batch_variance = new TFOutput (op, _idx++);
 			var reserve_space_1 = new TFOutput (op, _idx++);
 			var reserve_space_2 = new TFOutput (op, _idx++);
-			return (y, batch_mean, batch_variance, reserve_space_1, reserve_space_2);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput, TFOutput, TFOutput>(y, batch_mean, batch_variance, reserve_space_1, reserve_space_2);
 		}
 
 		/// <summary>
@@ -12020,7 +12043,8 @@ namespace TensorFlow {
 		///   use the corresponding index_table_from_file() as the FeatureColumn framework
 		///   does (as opposed to tf.feature_to_id(), which uses a CuckooTable).
 		/// </remarks>
-		public (TFOutput remapping, TFOutput num_present) GenerateVocabRemapping (TFOutput new_vocab_file, TFOutput old_vocab_file, long new_vocab_offset, long num_new_vocab, long? old_vocab_size = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "remapping", "num_present" })]
+		public ValueTuple<TFOutput, TFOutput> GenerateVocabRemapping (TFOutput new_vocab_file, TFOutput old_vocab_file, long new_vocab_offset, long num_new_vocab, long? old_vocab_size = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "GenerateVocabRemapping", MakeName ("GenerateVocabRemapping", operName));
 			desc.AddInput (new_vocab_file);
@@ -12037,7 +12061,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var remapping = new TFOutput (op, _idx++);
 			var num_present = new TFOutput (op, _idx++);
-			return (remapping, num_present);
+			return ValueTuple.Create<TFOutput, TFOutput>(remapping, num_present);
 		}
 
 		/// <summary>
@@ -14096,7 +14120,8 @@ namespace TensorFlow {
 		///   the sampled candidates must be chosen independently of the context and of the
 		///   true labels.
 		/// </remarks>
-		public (TFOutput sampled_candidates, TFOutput true_expected_count, TFOutput sampled_expected_count) LearnedUnigramCandidateSampler (TFOutput true_classes, long num_true, long num_sampled, bool unique, long range_max, long? seed = null, long? seed2 = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "sampled_candidates", "true_expected_count", "sampled_expected_count" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> LearnedUnigramCandidateSampler (TFOutput true_classes, long num_true, long num_sampled, bool unique, long range_max, long? seed = null, long? seed2 = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "LearnedUnigramCandidateSampler", MakeName ("LearnedUnigramCandidateSampler", operName));
 			desc.AddInput (true_classes);
@@ -14118,7 +14143,7 @@ namespace TensorFlow {
 			var sampled_candidates = new TFOutput (op, _idx++);
 			var true_expected_count = new TFOutput (op, _idx++);
 			var sampled_expected_count = new TFOutput (op, _idx++);
-			return (sampled_candidates, true_expected_count, sampled_expected_count);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(sampled_candidates, true_expected_count, sampled_expected_count);
 		}
 
 		/// <summary>
@@ -14327,7 +14352,8 @@ namespace TensorFlow {
 		///   idx ==&amp;gt; [1, 3, 5]
 		///    </code>
 		/// </remarks>
-		public (TFOutput output, TFOutput idx) ListDiff (TFOutput x, TFOutput y, TFDataType? out_idx = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output", "idx" })]
+		public ValueTuple<TFOutput, TFOutput> ListDiff (TFOutput x, TFOutput y, TFDataType? out_idx = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "ListDiff", MakeName ("ListDiff", operName));
 			desc.AddInput (x);
@@ -14342,7 +14368,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var output = new TFOutput (op, _idx++);
 			var idx = new TFOutput (op, _idx++);
-			return (output, idx);
+			return ValueTuple.Create<TFOutput, TFOutput>(output, idx);
 		}
 
 		/// <summary>
@@ -14654,7 +14680,8 @@ namespace TensorFlow {
 		///   is the LU decomposition of the input and P is the corresponding
 		///   permutation matrix.
 		/// </remarks>
-		public (TFOutput sign, TFOutput log_abs_determinant) LogMatrixDeterminant (TFOutput input, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "sign", "log_abs_determinant" })]
+		public ValueTuple<TFOutput, TFOutput> LogMatrixDeterminant (TFOutput input, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "LogMatrixDeterminant", MakeName ("LogMatrixDeterminant", operName));
 			desc.AddInput (input);
@@ -14665,7 +14692,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var sign = new TFOutput (op, _idx++);
 			var log_abs_determinant = new TFOutput (op, _idx++);
-			return (sign, log_abs_determinant);
+			return ValueTuple.Create<TFOutput, TFOutput>(sign, log_abs_determinant);
 		}
 
 		/// <summary>
@@ -14757,7 +14784,8 @@ namespace TensorFlow {
 		///   the sampled candidates must be chosen independently of the context and of the
 		///   true labels.
 		/// </remarks>
-		public (TFOutput sampled_candidates, TFOutput true_expected_count, TFOutput sampled_expected_count) LogUniformCandidateSampler (TFOutput true_classes, long num_true, long num_sampled, bool unique, long range_max, long? seed = null, long? seed2 = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "sampled_candidates", "true_expected_count", "sampled_expected_count" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> LogUniformCandidateSampler (TFOutput true_classes, long num_true, long num_sampled, bool unique, long range_max, long? seed = null, long? seed2 = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "LogUniformCandidateSampler", MakeName ("LogUniformCandidateSampler", operName));
 			desc.AddInput (true_classes);
@@ -14779,7 +14807,7 @@ namespace TensorFlow {
 			var sampled_candidates = new TFOutput (op, _idx++);
 			var true_expected_count = new TFOutput (op, _idx++);
 			var sampled_expected_count = new TFOutput (op, _idx++);
-			return (sampled_candidates, true_expected_count, sampled_expected_count);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(sampled_candidates, true_expected_count, sampled_expected_count);
 		}
 
 		/// <summary>
@@ -14801,7 +14829,8 @@ namespace TensorFlow {
 		///   values: Tensor of all values in the table. Indexed in parallel with <c>keys</c>.
 		///   The TFOperation can be fetched from any of the TFOutputs returned in the tuple values, by fethching the Operation property.
 		/// </returns>
-		public (TFOutput keys, TFOutput values) LookupTableExport (TFOutput table_handle, TFDataType Tkeys, TFDataType Tvalues, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "keys", "values" })]
+		public ValueTuple<TFOutput, TFOutput> LookupTableExport (TFOutput table_handle, TFDataType Tkeys, TFDataType Tvalues, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "LookupTableExport", MakeName ("LookupTableExport", operName));
 			desc.AddInput (table_handle);
@@ -14814,7 +14843,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var keys = new TFOutput (op, _idx++);
 			var values = new TFOutput (op, _idx++);
-			return (keys, values);
+			return ValueTuple.Create<TFOutput, TFOutput>(keys, values);
 		}
 
 		/// <summary>
@@ -14836,7 +14865,8 @@ namespace TensorFlow {
 		///   values: Tensor of all values in the table. Indexed in parallel with <c>keys</c>.
 		///   The TFOperation can be fetched from any of the TFOutputs returned in the tuple values, by fethching the Operation property.
 		/// </returns>
-		public (TFOutput keys, TFOutput values) LookupTableExportV2 (TFOutput table_handle, TFDataType Tkeys, TFDataType Tvalues, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "keys", "values" })]
+		public ValueTuple<TFOutput, TFOutput> LookupTableExportV2 (TFOutput table_handle, TFDataType Tkeys, TFDataType Tvalues, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "LookupTableExportV2", MakeName ("LookupTableExportV2", operName));
 			desc.AddInput (table_handle);
@@ -14849,7 +14879,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var keys = new TFOutput (op, _idx++);
 			var values = new TFOutput (op, _idx++);
-			return (keys, values);
+			return ValueTuple.Create<TFOutput, TFOutput>(keys, values);
 		}
 
 		/// <summary>
@@ -15676,7 +15706,8 @@ namespace TensorFlow {
 		///   from the underlying container.   If the underlying container
 		///   does not contain elements, the op will block until it does.
 		/// </remarks>
-		public (TFOutput key, TFOutput[] values) MapUnstageNoKey (TFOutput indices, TFDataType[] dtypes, long? capacity = null, long? memory_limit = null, string container = null, string shared_name = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "key", "values" })]
+		public ValueTuple<TFOutput, TFOutput[]> MapUnstageNoKey (TFOutput indices, TFDataType[] dtypes, long? capacity = null, long? memory_limit = null, string container = null, string shared_name = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "MapUnstageNoKey", MakeName ("MapUnstageNoKey", operName));
 			desc.AddInput (indices);
@@ -15705,7 +15736,7 @@ namespace TensorFlow {
 			for (int i = 0; i < _n; i++)
 				values [i] = new TFOutput (op, _idx++);
 			
-			return (key, values);
+			return ValueTuple.Create<TFOutput, TFOutput[]>(key, values);
 		}
 
 		/// <summary>
@@ -17092,7 +17123,8 @@ namespace TensorFlow {
 		///   (either negative or too large).  This is a bug, but fixing it is difficult to do
 		///   in a safe backwards compatible way, especially due to flattening.
 		/// </remarks>
-		public (TFOutput output, TFOutput argmax) MaxPoolWithArgmax (TFOutput input, long[] ksize, long[] strides, string padding, TFDataType? Targmax = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output", "argmax" })]
+		public ValueTuple<TFOutput, TFOutput> MaxPoolWithArgmax (TFOutput input, long[] ksize, long[] strides, string padding, TFDataType? Targmax = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "MaxPoolWithArgmax", MakeName ("MaxPoolWithArgmax", operName));
 			desc.AddInput (input);
@@ -17109,7 +17141,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var output = new TFOutput (op, _idx++);
 			var argmax = new TFOutput (op, _idx++);
-			return (output, argmax);
+			return ValueTuple.Create<TFOutput, TFOutput>(output, argmax);
 		}
 
 		/// <summary>
@@ -17178,7 +17210,8 @@ namespace TensorFlow {
 		///   <c>Merge</c> forwards the first tensor to become available to <c>output</c>, and sets
 		///   <c>value_index</c> to its index in <c>inputs</c>.
 		/// </remarks>
-		public (TFOutput output, TFOutput value_index) Merge (TFOutput[] inputs, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output", "value_index" })]
+		public ValueTuple<TFOutput, TFOutput> Merge (TFOutput[] inputs, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "Merge", MakeName ("Merge", operName));
 			desc.AddInputs (inputs);
@@ -17189,7 +17222,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var output = new TFOutput (op, _idx++);
 			var value_index = new TFOutput (op, _idx++);
-			return (output, value_index);
+			return ValueTuple.Create<TFOutput, TFOutput>(output, value_index);
 		}
 
 		/// <summary>
@@ -19026,7 +19059,8 @@ namespace TensorFlow {
 		///   key from the underlying container.   If the underlying container
 		///   does not contain elements, the op will block until it does.
 		/// </remarks>
-		public (TFOutput key, TFOutput[] values) OrderedMapUnstageNoKey (TFOutput indices, TFDataType[] dtypes, long? capacity = null, long? memory_limit = null, string container = null, string shared_name = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "key", "values" })]
+		public ValueTuple<TFOutput, TFOutput[]> OrderedMapUnstageNoKey (TFOutput indices, TFDataType[] dtypes, long? capacity = null, long? memory_limit = null, string container = null, string shared_name = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "OrderedMapUnstageNoKey", MakeName ("OrderedMapUnstageNoKey", operName));
 			desc.AddInput (indices);
@@ -19055,7 +19089,7 @@ namespace TensorFlow {
 			for (int i = 0; i < _n; i++)
 				values [i] = new TFOutput (op, _idx++);
 			
-			return (key, values);
+			return ValueTuple.Create<TFOutput, TFOutput[]>(key, values);
 		}
 
 		/// <summary>
@@ -19810,7 +19844,8 @@ namespace TensorFlow {
 		///   dense_values:
 		///   The TFOperation can be fetched from any of the TFOutputs returned in the tuple values, by fethching the Operation property.
 		/// </returns>
-		public (TFOutput[] sparse_indices, TFOutput[] sparse_values, TFOutput[] sparse_shapes, TFOutput[] dense_values) ParseExample (TFOutput serialized, TFOutput names, TFOutput[] sparse_keys, TFOutput[] dense_keys, TFOutput[] dense_defaults, TFDataType[] sparse_types, TFShape[] dense_shapes, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "sparse_indices", "sparse_values", "sparse_shapes", "dense_values" })]
+		public ValueTuple<TFOutput[], TFOutput[], TFOutput[], TFOutput[]> ParseExample (TFOutput serialized, TFOutput names, TFOutput[] sparse_keys, TFOutput[] dense_keys, TFOutput[] dense_defaults, TFDataType[] sparse_types, TFShape[] dense_shapes, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "ParseExample", MakeName ("ParseExample", operName));
 			desc.AddInput (serialized);
@@ -19846,7 +19881,7 @@ namespace TensorFlow {
 			for (int i = 0; i < _n; i++)
 				dense_values [i] = new TFOutput (op, _idx++);
 			
-			return (sparse_indices, sparse_values, sparse_shapes, dense_values);
+			return ValueTuple.Create<TFOutput[], TFOutput[], TFOutput[], TFOutput[]>(sparse_indices, sparse_values, sparse_shapes, dense_values);
 		}
 
 		/// <summary>
@@ -19907,7 +19942,8 @@ namespace TensorFlow {
 		///   dense_values:
 		///   The TFOperation can be fetched from any of the TFOutputs returned in the tuple values, by fethching the Operation property.
 		/// </returns>
-		public (TFOutput[] sparse_indices, TFOutput[] sparse_values, TFOutput[] sparse_shapes, TFOutput[] dense_values) ParseSingleExample (TFOutput serialized, TFOutput[] dense_defaults, long num_sparse, string[] sparse_keys, string[] dense_keys, TFDataType[] sparse_types, TFShape[] dense_shapes, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "sparse_indices", "sparse_values", "sparse_shapes", "dense_values" })]
+		public ValueTuple<TFOutput[], TFOutput[], TFOutput[], TFOutput[]> ParseSingleExample (TFOutput serialized, TFOutput[] dense_defaults, long num_sparse, string[] sparse_keys, string[] dense_keys, TFDataType[] sparse_types, TFShape[] dense_shapes, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "ParseSingleExample", MakeName ("ParseSingleExample", operName));
 			desc.AddInput (serialized);
@@ -19943,7 +19979,7 @@ namespace TensorFlow {
 			for (int i = 0; i < _n; i++)
 				dense_values [i] = new TFOutput (op, _idx++);
 			
-			return (sparse_indices, sparse_values, sparse_shapes, dense_values);
+			return ValueTuple.Create<TFOutput[], TFOutput[], TFOutput[], TFOutput[]>(sparse_indices, sparse_values, sparse_shapes, dense_values);
 		}
 
 		/// <summary>
@@ -20043,7 +20079,8 @@ namespace TensorFlow {
 		///   feature_list_dense_values:
 		///   The TFOperation can be fetched from any of the TFOutputs returned in the tuple values, by fethching the Operation property.
 		/// </returns>
-		public (TFOutput[] context_sparse_indices, TFOutput[] context_sparse_values, TFOutput[] context_sparse_shapes, TFOutput[] context_dense_values, TFOutput[] feature_list_sparse_indices, TFOutput[] feature_list_sparse_values, TFOutput[] feature_list_sparse_shapes, TFOutput[] feature_list_dense_values) ParseSingleSequenceExample (TFOutput serialized, TFOutput feature_list_dense_missing_assumed_empty, TFOutput[] context_sparse_keys, TFOutput[] context_dense_keys, TFOutput[] feature_list_sparse_keys, TFOutput[] feature_list_dense_keys, TFOutput[] context_dense_defaults, TFOutput debug_name, TFDataType[] context_sparse_types = null, TFDataType[] feature_list_dense_types = null, TFShape[] context_dense_shapes = null, TFDataType[] feature_list_sparse_types = null, TFShape[] feature_list_dense_shapes = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "context_sparse_indices", "context_sparse_values", "context_sparse_shapes", "context_dense_values", "feature_list_sparse_indices", "feature_list_sparse_values", "feature_list_sparse_shapes", "feature_list_dense_values" })]
+		public ValueTuple<TFOutput[], TFOutput[], TFOutput[], TFOutput[], TFOutput[], TFOutput[], TFOutput[], ValueTuple<TFOutput[]>> ParseSingleSequenceExample (TFOutput serialized, TFOutput feature_list_dense_missing_assumed_empty, TFOutput[] context_sparse_keys, TFOutput[] context_dense_keys, TFOutput[] feature_list_sparse_keys, TFOutput[] feature_list_dense_keys, TFOutput[] context_dense_defaults, TFOutput debug_name, TFDataType[] context_sparse_types = null, TFDataType[] feature_list_dense_types = null, TFShape[] context_dense_shapes = null, TFDataType[] feature_list_sparse_types = null, TFShape[] feature_list_dense_shapes = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "ParseSingleSequenceExample", MakeName ("ParseSingleSequenceExample", operName));
 			desc.AddInput (serialized);
@@ -20115,7 +20152,7 @@ namespace TensorFlow {
 			for (int i = 0; i < _n; i++)
 				feature_list_dense_values [i] = new TFOutput (op, _idx++);
 			
-			return (context_sparse_indices, context_sparse_values, context_sparse_shapes, context_dense_values, feature_list_sparse_indices, feature_list_sparse_values, feature_list_sparse_shapes, feature_list_dense_values);
+			return ValueTuple.Create<TFOutput[], TFOutput[], TFOutput[], TFOutput[], TFOutput[], TFOutput[], TFOutput[], TFOutput[]>(context_sparse_indices, context_sparse_values, context_sparse_shapes, context_dense_values, feature_list_sparse_indices, feature_list_sparse_values, feature_list_sparse_shapes, feature_list_dense_values);
 		}
 
 		/// <summary>
@@ -20704,7 +20741,8 @@ namespace TensorFlow {
 		///   q_full, r_full = qr(a, full_matrices=True)
 		///    </code>
 		/// </remarks>
-		public (TFOutput q, TFOutput r) Qr (TFOutput input, bool? full_matrices = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "q", "r" })]
+		public ValueTuple<TFOutput, TFOutput> Qr (TFOutput input, bool? full_matrices = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "Qr", MakeName ("Qr", operName));
 			desc.AddInput (input);
@@ -20718,7 +20756,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var q = new TFOutput (op, _idx++);
 			var r = new TFOutput (op, _idx++);
-			return (q, r);
+			return ValueTuple.Create<TFOutput, TFOutput>(q, r);
 		}
 
 		/// <summary>
@@ -20966,7 +21004,8 @@ namespace TensorFlow {
 		///   broadcasting [here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		///   The TFOperation can be fetched from any of the TFOutputs returned in the tuple values, by fethching the Operation property.
 		/// </returns>
-		public (TFOutput z, TFOutput min_z, TFOutput max_z) QuantizedAdd (TFOutput x, TFOutput y, TFOutput min_x, TFOutput max_x, TFOutput min_y, TFOutput max_y, TFDataType? Toutput = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "z", "min_z", "max_z" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> QuantizedAdd (TFOutput x, TFOutput y, TFOutput min_x, TFOutput max_x, TFOutput min_y, TFOutput max_y, TFDataType? Toutput = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "QuantizedAdd", MakeName ("QuantizedAdd", operName));
 			desc.AddInput (x);
@@ -20986,7 +21025,7 @@ namespace TensorFlow {
 			var z = new TFOutput (op, _idx++);
 			var min_z = new TFOutput (op, _idx++);
 			var max_z = new TFOutput (op, _idx++);
-			return (z, min_z, max_z);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(z, min_z, max_z);
 		}
 
 		/// <summary>
@@ -21022,7 +21061,8 @@ namespace TensorFlow {
 		///   max_output: The float value that the highest quantized output value represents.
 		///   The TFOperation can be fetched from any of the TFOutputs returned in the tuple values, by fethching the Operation property.
 		/// </returns>
-		public (TFOutput output, TFOutput min_output, TFOutput max_output) QuantizedAvgPool (TFOutput input, TFOutput min_input, TFOutput max_input, long[] ksize, long[] strides, string padding, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output", "min_output", "max_output" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> QuantizedAvgPool (TFOutput input, TFOutput min_input, TFOutput max_input, long[] ksize, long[] strides, string padding, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "QuantizedAvgPool", MakeName ("QuantizedAvgPool", operName));
 			desc.AddInput (input);
@@ -21039,7 +21079,7 @@ namespace TensorFlow {
 			var output = new TFOutput (op, _idx++);
 			var min_output = new TFOutput (op, _idx++);
 			var max_output = new TFOutput (op, _idx++);
-			return (output, min_output, max_output);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(output, min_output, max_output);
 		}
 
 		/// <summary>
@@ -21120,7 +21160,8 @@ namespace TensorFlow {
 		///   This op is deprecated and will be removed in the future. Prefer
 		///   <c>tf.nn.batch_normalization</c>.
 		/// </remarks>
-		public (TFOutput result, TFOutput result_min, TFOutput result_max) QuantizedBatchNormWithGlobalNormalization (TFOutput t, TFOutput t_min, TFOutput t_max, TFOutput m, TFOutput m_min, TFOutput m_max, TFOutput v, TFOutput v_min, TFOutput v_max, TFOutput beta, TFOutput beta_min, TFOutput beta_max, TFOutput gamma, TFOutput gamma_min, TFOutput gamma_max, TFDataType out_type, float variance_epsilon, bool scale_after_normalization, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "result", "result_min", "result_max" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> QuantizedBatchNormWithGlobalNormalization (TFOutput t, TFOutput t_min, TFOutput t_max, TFOutput m, TFOutput m_min, TFOutput m_max, TFOutput v, TFOutput v_min, TFOutput v_max, TFOutput beta, TFOutput beta_min, TFOutput beta_max, TFOutput gamma, TFOutput gamma_min, TFOutput gamma_max, TFDataType out_type, float variance_epsilon, bool scale_after_normalization, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "QuantizedBatchNormWithGlobalNormalization", MakeName ("QuantizedBatchNormWithGlobalNormalization", operName));
 			desc.AddInput (t);
@@ -21149,7 +21190,7 @@ namespace TensorFlow {
 			var result = new TFOutput (op, _idx++);
 			var result_min = new TFOutput (op, _idx++);
 			var result_max = new TFOutput (op, _idx++);
-			return (result, result_min, result_max);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(result, result_min, result_max);
 		}
 
 		/// <summary>
@@ -21187,7 +21228,8 @@ namespace TensorFlow {
 		/// <remarks>
 		///   Broadcasts the values of bias on dimensions 0..N-2 of 'input'.
 		/// </remarks>
-		public (TFOutput output, TFOutput min_out, TFOutput max_out) QuantizedBiasAdd (TFOutput input, TFOutput bias, TFOutput min_input, TFOutput max_input, TFOutput min_bias, TFOutput max_bias, TFDataType out_type, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output", "min_out", "max_out" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> QuantizedBiasAdd (TFOutput input, TFOutput bias, TFOutput min_input, TFOutput max_input, TFOutput min_bias, TFOutput max_bias, TFDataType out_type, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "QuantizedBiasAdd", MakeName ("QuantizedBiasAdd", operName));
 			desc.AddInput (input);
@@ -21205,7 +21247,7 @@ namespace TensorFlow {
 			var output = new TFOutput (op, _idx++);
 			var min_out = new TFOutput (op, _idx++);
 			var max_out = new TFOutput (op, _idx++);
-			return (output, min_out, max_out);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(output, min_out, max_out);
 		}
 
 		/// <summary>
@@ -21237,7 +21279,8 @@ namespace TensorFlow {
 		///   output_max: The float value that the maximum quantized output value represents.
 		///   The TFOperation can be fetched from any of the TFOutputs returned in the tuple values, by fethching the Operation property.
 		/// </returns>
-		public (TFOutput output, TFOutput output_min, TFOutput output_max) QuantizedConcat (TFOutput concat_dim, TFOutput[] values, TFOutput[] input_mins, TFOutput[] input_maxes, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output", "output_min", "output_max" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> QuantizedConcat (TFOutput concat_dim, TFOutput[] values, TFOutput[] input_mins, TFOutput[] input_maxes, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "QuantizedConcat", MakeName ("QuantizedConcat", operName));
 			desc.AddInput (concat_dim);
@@ -21252,7 +21295,7 @@ namespace TensorFlow {
 			var output = new TFOutput (op, _idx++);
 			var output_min = new TFOutput (op, _idx++);
 			var output_max = new TFOutput (op, _idx++);
-			return (output, output_min, output_max);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(output, output_min, output_max);
 		}
 
 		/// <summary>
@@ -21309,7 +21352,8 @@ namespace TensorFlow {
 		///   This means that you can only interpret the quantized output in the same way, by
 		///   taking the returned minimum and maximum values into account.
 		/// </remarks>
-		public (TFOutput output, TFOutput min_output, TFOutput max_output) QuantizedConv2D (TFOutput input, TFOutput filter, TFOutput min_input, TFOutput max_input, TFOutput min_filter, TFOutput max_filter, long[] strides, string padding, TFDataType? out_type = null, long[] dilations = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output", "min_output", "max_output" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> QuantizedConv2D (TFOutput input, TFOutput filter, TFOutput min_input, TFOutput max_input, TFOutput min_filter, TFOutput max_filter, long[] strides, string padding, TFDataType? out_type = null, long[] dilations = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "QuantizedConv2D", MakeName ("QuantizedConv2D", operName));
 			desc.AddInput (input);
@@ -21334,7 +21378,7 @@ namespace TensorFlow {
 			var output = new TFOutput (op, _idx++);
 			var min_output = new TFOutput (op, _idx++);
 			var max_output = new TFOutput (op, _idx++);
-			return (output, min_output, max_output);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(output, min_output, max_output);
 		}
 
 		/// <summary>
@@ -21381,7 +21425,8 @@ namespace TensorFlow {
 		///   y_max: The value represented by the highest quantized output.
 		///   The TFOperation can be fetched from any of the TFOutputs returned in the tuple values, by fethching the Operation property.
 		/// </returns>
-		public (TFOutput y, TFOutput y_min, TFOutput y_max) QuantizedInstanceNorm (TFOutput x, TFOutput x_min, TFOutput x_max, bool? output_range_given = null, float? given_y_min = null, float? given_y_max = null, float? variance_epsilon = null, float? min_separation = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "y", "y_min", "y_max" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> QuantizedInstanceNorm (TFOutput x, TFOutput x_min, TFOutput x_max, bool? output_range_given = null, float? given_y_min = null, float? given_y_max = null, float? variance_epsilon = null, float? min_separation = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "QuantizedInstanceNorm", MakeName ("QuantizedInstanceNorm", operName));
 			desc.AddInput (x);
@@ -21410,7 +21455,7 @@ namespace TensorFlow {
 			var y = new TFOutput (op, _idx++);
 			var y_min = new TFOutput (op, _idx++);
 			var y_max = new TFOutput (op, _idx++);
-			return (y, y_min, y_max);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(y, y_min, y_max);
 		}
 
 		/// <summary>
@@ -21466,7 +21511,8 @@ namespace TensorFlow {
 		///   outer dimension of <c>b</c> (after being transposed if <c>transposed_b</c> is
 		///   non-zero).
 		/// </remarks>
-		public (TFOutput output, TFOutput min_out, TFOutput max_out) QuantizedMatMul (TFOutput a, TFOutput b, TFOutput min_a, TFOutput max_a, TFOutput min_b, TFOutput max_b, TFDataType? Toutput = null, bool? transpose_a = null, bool? transpose_b = null, TFDataType? Tactivation = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output", "min_out", "max_out" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> QuantizedMatMul (TFOutput a, TFOutput b, TFOutput min_a, TFOutput max_a, TFOutput min_b, TFOutput max_b, TFDataType? Toutput = null, bool? transpose_a = null, bool? transpose_b = null, TFDataType? Tactivation = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "QuantizedMatMul", MakeName ("QuantizedMatMul", operName));
 			desc.AddInput (a);
@@ -21495,7 +21541,7 @@ namespace TensorFlow {
 			var output = new TFOutput (op, _idx++);
 			var min_out = new TFOutput (op, _idx++);
 			var max_out = new TFOutput (op, _idx++);
-			return (output, min_out, max_out);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(output, min_out, max_out);
 		}
 
 		/// <summary>
@@ -21531,7 +21577,8 @@ namespace TensorFlow {
 		///   max_output: The float value that the highest quantized output value represents.
 		///   The TFOperation can be fetched from any of the TFOutputs returned in the tuple values, by fethching the Operation property.
 		/// </returns>
-		public (TFOutput output, TFOutput min_output, TFOutput max_output) QuantizedMaxPool (TFOutput input, TFOutput min_input, TFOutput max_input, long[] ksize, long[] strides, string padding, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output", "min_output", "max_output" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> QuantizedMaxPool (TFOutput input, TFOutput min_input, TFOutput max_input, long[] ksize, long[] strides, string padding, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "QuantizedMaxPool", MakeName ("QuantizedMaxPool", operName));
 			desc.AddInput (input);
@@ -21548,7 +21595,7 @@ namespace TensorFlow {
 			var output = new TFOutput (op, _idx++);
 			var min_output = new TFOutput (op, _idx++);
 			var max_output = new TFOutput (op, _idx++);
-			return (output, min_output, max_output);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(output, min_output, max_output);
 		}
 
 		/// <summary>
@@ -21586,7 +21633,8 @@ namespace TensorFlow {
 		///   broadcasting [here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		///   The TFOperation can be fetched from any of the TFOutputs returned in the tuple values, by fethching the Operation property.
 		/// </returns>
-		public (TFOutput z, TFOutput min_z, TFOutput max_z) QuantizedMul (TFOutput x, TFOutput y, TFOutput min_x, TFOutput max_x, TFOutput min_y, TFOutput max_y, TFDataType? Toutput = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "z", "min_z", "max_z" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> QuantizedMul (TFOutput x, TFOutput y, TFOutput min_x, TFOutput max_x, TFOutput min_y, TFOutput max_y, TFDataType? Toutput = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "QuantizedMul", MakeName ("QuantizedMul", operName));
 			desc.AddInput (x);
@@ -21606,7 +21654,7 @@ namespace TensorFlow {
 			var z = new TFOutput (op, _idx++);
 			var min_z = new TFOutput (op, _idx++);
 			var max_z = new TFOutput (op, _idx++);
-			return (z, min_z, max_z);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(z, min_z, max_z);
 		}
 
 		/// <summary>
@@ -21657,7 +21705,8 @@ namespace TensorFlow {
 		///   that output into this operator, we can reduce it from 32 bits down to 8 with
 		///   minimal loss of accuracy.
 		/// </remarks>
-		public (TFOutput output, TFOutput output_min, TFOutput output_max) QuantizeDownAndShrinkRange (TFOutput input, TFOutput input_min, TFOutput input_max, TFDataType out_type, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output", "output_min", "output_max" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> QuantizeDownAndShrinkRange (TFOutput input, TFOutput input_min, TFOutput input_max, TFDataType out_type, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "QuantizeDownAndShrinkRange", MakeName ("QuantizeDownAndShrinkRange", operName));
 			desc.AddInput (input);
@@ -21672,7 +21721,7 @@ namespace TensorFlow {
 			var output = new TFOutput (op, _idx++);
 			var output_min = new TFOutput (op, _idx++);
 			var output_max = new TFOutput (op, _idx++);
-			return (output, output_min, output_max);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(output, output_min, output_max);
 		}
 
 		/// <summary>
@@ -21699,7 +21748,8 @@ namespace TensorFlow {
 		///   max_activations: The float value that the highest quantized value represents.
 		///   The TFOperation can be fetched from any of the TFOutputs returned in the tuple values, by fethching the Operation property.
 		/// </returns>
-		public (TFOutput activations, TFOutput min_activations, TFOutput max_activations) QuantizedRelu (TFOutput features, TFOutput min_features, TFOutput max_features, TFDataType? out_type = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "activations", "min_activations", "max_activations" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> QuantizedRelu (TFOutput features, TFOutput min_features, TFOutput max_features, TFDataType? out_type = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "QuantizedRelu", MakeName ("QuantizedRelu", operName));
 			desc.AddInput (features);
@@ -21716,7 +21766,7 @@ namespace TensorFlow {
 			var activations = new TFOutput (op, _idx++);
 			var min_activations = new TFOutput (op, _idx++);
 			var max_activations = new TFOutput (op, _idx++);
-			return (activations, min_activations, max_activations);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(activations, min_activations, max_activations);
 		}
 
 		/// <summary>
@@ -21743,7 +21793,8 @@ namespace TensorFlow {
 		///   max_activations: The float value that the highest quantized value represents.
 		///   The TFOperation can be fetched from any of the TFOutputs returned in the tuple values, by fethching the Operation property.
 		/// </returns>
-		public (TFOutput activations, TFOutput min_activations, TFOutput max_activations) QuantizedRelu6 (TFOutput features, TFOutput min_features, TFOutput max_features, TFDataType? out_type = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "activations", "min_activations", "max_activations" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> QuantizedRelu6 (TFOutput features, TFOutput min_features, TFOutput max_features, TFDataType? out_type = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "QuantizedRelu6", MakeName ("QuantizedRelu6", operName));
 			desc.AddInput (features);
@@ -21760,7 +21811,7 @@ namespace TensorFlow {
 			var activations = new TFOutput (op, _idx++);
 			var min_activations = new TFOutput (op, _idx++);
 			var max_activations = new TFOutput (op, _idx++);
-			return (activations, min_activations, max_activations);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(activations, min_activations, max_activations);
 		}
 
 		/// <summary>
@@ -21789,7 +21840,8 @@ namespace TensorFlow {
 		///   max_activations: The float value that the highest quantized value represents.
 		///   The TFOperation can be fetched from any of the TFOutputs returned in the tuple values, by fethching the Operation property.
 		/// </returns>
-		public (TFOutput activations, TFOutput min_activations, TFOutput max_activations) QuantizedReluX (TFOutput features, TFOutput max_value, TFOutput min_features, TFOutput max_features, TFDataType? out_type = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "activations", "min_activations", "max_activations" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> QuantizedReluX (TFOutput features, TFOutput max_value, TFOutput min_features, TFOutput max_features, TFDataType? out_type = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "QuantizedReluX", MakeName ("QuantizedReluX", operName));
 			desc.AddInput (features);
@@ -21807,7 +21859,7 @@ namespace TensorFlow {
 			var activations = new TFOutput (op, _idx++);
 			var min_activations = new TFOutput (op, _idx++);
 			var max_activations = new TFOutput (op, _idx++);
-			return (activations, min_activations, max_activations);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(activations, min_activations, max_activations);
 		}
 
 		/// <summary>
@@ -21837,7 +21889,8 @@ namespace TensorFlow {
 		/// <remarks>
 		///    <code>
 		/// </remarks>
-		public (TFOutput output, TFOutput output_min, TFOutput output_max) QuantizedReshape (TFOutput tensor, TFOutput shape, TFOutput input_min, TFOutput input_max, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output", "output_min", "output_max" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> QuantizedReshape (TFOutput tensor, TFOutput shape, TFOutput input_min, TFOutput input_max, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "QuantizedReshape", MakeName ("QuantizedReshape", operName));
 			desc.AddInput (tensor);
@@ -21852,7 +21905,7 @@ namespace TensorFlow {
 			var output = new TFOutput (op, _idx++);
 			var output_min = new TFOutput (op, _idx++);
 			var output_max = new TFOutput (op, _idx++);
-			return (output, output_min, output_max);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(output, output_min, output_max);
 		}
 
 		/// <summary>
@@ -21888,7 +21941,8 @@ namespace TensorFlow {
 		/// <remarks>
 		///   Input images and output images must be quantized types.
 		/// </remarks>
-		public (TFOutput resized_images, TFOutput out_min, TFOutput out_max) QuantizedResizeBilinear (TFOutput images, TFOutput size, TFOutput min, TFOutput max, bool? align_corners = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "resized_images", "out_min", "out_max" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> QuantizedResizeBilinear (TFOutput images, TFOutput size, TFOutput min, TFOutput max, bool? align_corners = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "QuantizedResizeBilinear", MakeName ("QuantizedResizeBilinear", operName));
 			desc.AddInput (images);
@@ -21906,7 +21960,7 @@ namespace TensorFlow {
 			var resized_images = new TFOutput (op, _idx++);
 			var out_min = new TFOutput (op, _idx++);
 			var out_max = new TFOutput (op, _idx++);
-			return (resized_images, out_min, out_max);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(resized_images, out_min, out_max);
 		}
 
 		/// <summary>
@@ -22032,7 +22086,8 @@ namespace TensorFlow {
 		///   quantized values map to the same float value, which causes problems for
 		///   operations that have to perform further calculations on them.
 		/// </remarks>
-		public (TFOutput output, TFOutput output_min, TFOutput output_max) QuantizeV2 (TFOutput input, TFOutput min_range, TFOutput max_range, TFDataType T, string mode = null, string round_mode = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output", "output_min", "output_max" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> QuantizeV2 (TFOutput input, TFOutput min_range, TFOutput max_range, TFDataType T, string mode = null, string round_mode = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "QuantizeV2", MakeName ("QuantizeV2", operName));
 			desc.AddInput (input);
@@ -22053,7 +22108,7 @@ namespace TensorFlow {
 			var output = new TFOutput (op, _idx++);
 			var output_min = new TFOutput (op, _idx++);
 			var output_max = new TFOutput (op, _idx++);
-			return (output, output_min, output_max);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(output, output_min, output_max);
 		}
 
 		/// <summary>
@@ -23676,7 +23731,8 @@ namespace TensorFlow {
 		///   Reader needs to start reading from a new file since it has finished
 		///   with the previous file).
 		/// </remarks>
-		public (TFOutput key, TFOutput value) ReaderRead (TFOutput reader_handle, TFOutput queue_handle, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "key", "value" })]
+		public ValueTuple<TFOutput, TFOutput> ReaderRead (TFOutput reader_handle, TFOutput queue_handle, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "ReaderRead", MakeName ("ReaderRead", operName));
 			desc.AddInput (reader_handle);
@@ -23688,7 +23744,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var key = new TFOutput (op, _idx++);
 			var value = new TFOutput (op, _idx++);
-			return (key, value);
+			return ValueTuple.Create<TFOutput, TFOutput>(key, value);
 		}
 
 		/// <summary>
@@ -23718,7 +23774,8 @@ namespace TensorFlow {
 		///   with the previous file).
 		///   It may return less than <c>num_records</c> even before the last batch.
 		/// </remarks>
-		public (TFOutput keys, TFOutput values) ReaderReadUpTo (TFOutput reader_handle, TFOutput queue_handle, TFOutput num_records, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "keys", "values" })]
+		public ValueTuple<TFOutput, TFOutput> ReaderReadUpTo (TFOutput reader_handle, TFOutput queue_handle, TFOutput num_records, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "ReaderReadUpTo", MakeName ("ReaderReadUpTo", operName));
 			desc.AddInput (reader_handle);
@@ -23731,7 +23788,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var keys = new TFOutput (op, _idx++);
 			var values = new TFOutput (op, _idx++);
-			return (keys, values);
+			return ValueTuple.Create<TFOutput, TFOutput>(keys, values);
 		}
 
 		/// <summary>
@@ -23761,7 +23818,8 @@ namespace TensorFlow {
 		///   with the previous file).
 		///   It may return less than <c>num_records</c> even before the last batch.
 		/// </remarks>
-		public (TFOutput keys, TFOutput values) ReaderReadUpToV2 (TFOutput reader_handle, TFOutput queue_handle, TFOutput num_records, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "keys", "values" })]
+		public ValueTuple<TFOutput, TFOutput> ReaderReadUpToV2 (TFOutput reader_handle, TFOutput queue_handle, TFOutput num_records, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "ReaderReadUpToV2", MakeName ("ReaderReadUpToV2", operName));
 			desc.AddInput (reader_handle);
@@ -23774,7 +23832,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var keys = new TFOutput (op, _idx++);
 			var values = new TFOutput (op, _idx++);
-			return (keys, values);
+			return ValueTuple.Create<TFOutput, TFOutput>(keys, values);
 		}
 
 		/// <summary>
@@ -23800,7 +23858,8 @@ namespace TensorFlow {
 		///   Reader needs to start reading from a new file since it has finished
 		///   with the previous file).
 		/// </remarks>
-		public (TFOutput key, TFOutput value) ReaderReadV2 (TFOutput reader_handle, TFOutput queue_handle, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "key", "value" })]
+		public ValueTuple<TFOutput, TFOutput> ReaderReadV2 (TFOutput reader_handle, TFOutput queue_handle, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "ReaderReadV2", MakeName ("ReaderReadV2", operName));
 			desc.AddInput (reader_handle);
@@ -23812,7 +23871,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var key = new TFOutput (op, _idx++);
 			var value = new TFOutput (op, _idx++);
-			return (key, value);
+			return ValueTuple.Create<TFOutput, TFOutput>(key, value);
 		}
 
 		/// <summary>
@@ -24442,7 +24501,8 @@ namespace TensorFlow {
 		///   <c>Merge</c> forwards the first tensor for become available to <c>output</c>, and sets
 		///   <c>value_index</c> to its index in <c>inputs</c>.
 		/// </remarks>
-		public (TFOutput output, TFOutput value_index) RefMerge (TFOutput[] inputs, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output", "value_index" })]
+		public ValueTuple<TFOutput, TFOutput> RefMerge (TFOutput[] inputs, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "RefMerge", MakeName ("RefMerge", operName));
 			desc.AddInputs (inputs);
@@ -24453,7 +24513,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var output = new TFOutput (op, _idx++);
 			var value_index = new TFOutput (op, _idx++);
-			return (output, value_index);
+			return ValueTuple.Create<TFOutput, TFOutput>(output, value_index);
 		}
 
 		/// <summary>
@@ -24536,7 +24596,8 @@ namespace TensorFlow {
 		///   
 		///   See also <c>Switch</c> and <c>Merge</c>.
 		/// </remarks>
-		public (TFOutput output_false, TFOutput output_true) RefSwitch (TFOutput data, TFOutput pred, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output_false", "output_true" })]
+		public ValueTuple<TFOutput, TFOutput> RefSwitch (TFOutput data, TFOutput pred, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "RefSwitch", MakeName ("RefSwitch", operName));
 			desc.AddInput (data);
@@ -24548,7 +24609,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var output_false = new TFOutput (op, _idx++);
 			var output_true = new TFOutput (op, _idx++);
-			return (output_false, output_true);
+			return ValueTuple.Create<TFOutput, TFOutput>(output_false, output_true);
 		}
 
 		/// <summary>
@@ -24815,7 +24876,8 @@ namespace TensorFlow {
 		///   typically used to produce the requested_output_min and requested_output_max for
 		///   Requantize.
 		/// </remarks>
-		public (TFOutput output_min, TFOutput output_max) RequantizationRange (TFOutput input, TFOutput input_min, TFOutput input_max, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output_min", "output_max" })]
+		public ValueTuple<TFOutput, TFOutput> RequantizationRange (TFOutput input, TFOutput input_min, TFOutput input_max, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "RequantizationRange", MakeName ("RequantizationRange", operName));
 			desc.AddInput (input);
@@ -24828,7 +24890,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var output_min = new TFOutput (op, _idx++);
 			var output_max = new TFOutput (op, _idx++);
-			return (output_min, output_max);
+			return ValueTuple.Create<TFOutput, TFOutput>(output_min, output_max);
 		}
 
 		/// <summary>
@@ -24869,7 +24931,8 @@ namespace TensorFlow {
 		///   input_max is 1.0f, and we are dealing with quint16 quantized data, then a 0
 		///   value in the 16-bit data should be interpreted as -1.0f, and a 65535 means 1.0f.
 		/// </remarks>
-		public (TFOutput output, TFOutput output_min, TFOutput output_max) Requantize (TFOutput input, TFOutput input_min, TFOutput input_max, TFOutput requested_output_min, TFOutput requested_output_max, TFDataType out_type, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output", "output_min", "output_max" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> Requantize (TFOutput input, TFOutput input_min, TFOutput input_max, TFOutput requested_output_min, TFOutput requested_output_max, TFDataType out_type, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "Requantize", MakeName ("Requantize", operName));
 			desc.AddInput (input);
@@ -24886,7 +24949,7 @@ namespace TensorFlow {
 			var output = new TFOutput (op, _idx++);
 			var output_min = new TFOutput (op, _idx++);
 			var output_max = new TFOutput (op, _idx++);
-			return (output, output_min, output_max);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(output, output_min, output_max);
 		}
 
 		/// <summary>
@@ -28099,7 +28162,8 @@ namespace TensorFlow {
 		///   bounding box covering the whole image. If <c>use_image_if_no_bounding_boxes</c> is
 		///   false and no bounding boxes are supplied, an error is raised.
 		/// </remarks>
-		public (TFOutput begin, TFOutput size, TFOutput bboxes) SampleDistortedBoundingBox (TFOutput image_size, TFOutput bounding_boxes, long? seed = null, long? seed2 = null, float? min_object_covered = null, float[] aspect_ratio_range = null, float[] area_range = null, long? max_attempts = null, bool? use_image_if_no_bounding_boxes = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "begin", "size", "bboxes" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> SampleDistortedBoundingBox (TFOutput image_size, TFOutput bounding_boxes, long? seed = null, long? seed2 = null, float? min_object_covered = null, float[] aspect_ratio_range = null, float[] area_range = null, long? max_attempts = null, bool? use_image_if_no_bounding_boxes = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "SampleDistortedBoundingBox", MakeName ("SampleDistortedBoundingBox", operName));
 			desc.AddInput (image_size);
@@ -28133,7 +28197,7 @@ namespace TensorFlow {
 			var begin = new TFOutput (op, _idx++);
 			var size = new TFOutput (op, _idx++);
 			var bboxes = new TFOutput (op, _idx++);
-			return (begin, size, bboxes);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(begin, size, bboxes);
 		}
 
 		/// <summary>
@@ -28237,7 +28301,8 @@ namespace TensorFlow {
 		///   bounding box covering the whole image. If <c>use_image_if_no_bounding_boxes</c> is
 		///   false and no bounding boxes are supplied, an error is raised.
 		/// </remarks>
-		public (TFOutput begin, TFOutput size, TFOutput bboxes) SampleDistortedBoundingBoxV2 (TFOutput image_size, TFOutput bounding_boxes, TFOutput min_object_covered, long? seed = null, long? seed2 = null, float[] aspect_ratio_range = null, float[] area_range = null, long? max_attempts = null, bool? use_image_if_no_bounding_boxes = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "begin", "size", "bboxes" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> SampleDistortedBoundingBoxV2 (TFOutput image_size, TFOutput bounding_boxes, TFOutput min_object_covered, long? seed = null, long? seed2 = null, float[] aspect_ratio_range = null, float[] area_range = null, long? max_attempts = null, bool? use_image_if_no_bounding_boxes = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "SampleDistortedBoundingBoxV2", MakeName ("SampleDistortedBoundingBoxV2", operName));
 			desc.AddInput (image_size);
@@ -28269,7 +28334,7 @@ namespace TensorFlow {
 			var begin = new TFOutput (op, _idx++);
 			var size = new TFOutput (op, _idx++);
 			var bboxes = new TFOutput (op, _idx++);
-			return (begin, size, bboxes);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(begin, size, bboxes);
 		}
 
 		/// <summary>
@@ -29329,7 +29394,8 @@ namespace TensorFlow {
 		///   [Stochastic Dual Coordinate Ascent with Adaptive Probabilities](https://arxiv.org/abs/1502.08053).&amp;lt;br&amp;gt;
 		///   Dominik Csiba, Zheng Qu, Peter Richtarik. 2015
 		/// </remarks>
-		public (TFOutput out_example_state_data, TFOutput[] out_delta_sparse_weights, TFOutput[] out_delta_dense_weights) SdcaOptimizer (TFOutput[] sparse_example_indices, TFOutput[] sparse_feature_indices, TFOutput[] sparse_feature_values, TFOutput[] dense_features, TFOutput example_weights, TFOutput example_labels, TFOutput[] sparse_indices, TFOutput[] sparse_weights, TFOutput[] dense_weights, TFOutput example_state_data, string loss_type, float l1, float l2, long num_loss_partitions, long num_inner_iterations, bool? adaptative = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "out_example_state_data", "out_delta_sparse_weights", "out_delta_dense_weights" })]
+		public ValueTuple<TFOutput, TFOutput[], TFOutput[]> SdcaOptimizer (TFOutput[] sparse_example_indices, TFOutput[] sparse_feature_indices, TFOutput[] sparse_feature_values, TFOutput[] dense_features, TFOutput example_weights, TFOutput example_labels, TFOutput[] sparse_indices, TFOutput[] sparse_weights, TFOutput[] dense_weights, TFOutput example_state_data, string loss_type, float l1, float l2, long num_loss_partitions, long num_inner_iterations, bool? adaptative = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "SdcaOptimizer", MakeName ("SdcaOptimizer", operName));
 			desc.AddInputs (sparse_example_indices);
@@ -29367,7 +29433,7 @@ namespace TensorFlow {
 			for (int i = 0; i < _n; i++)
 				out_delta_dense_weights [i] = new TFOutput (op, _idx++);
 			
-			return (out_example_state_data, out_delta_sparse_weights, out_delta_dense_weights);
+			return ValueTuple.Create<TFOutput, TFOutput[], TFOutput[]>(out_example_state_data, out_delta_sparse_weights, out_delta_dense_weights);
 		}
 
 		/// <summary>
@@ -29769,7 +29835,8 @@ namespace TensorFlow {
 		///   e = self_adjoint_eig(a, compute_v=False)
 		///    </code>
 		/// </remarks>
-		public (TFOutput e, TFOutput v) SelfAdjointEigV2 (TFOutput input, bool? compute_v = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "e", "v" })]
+		public ValueTuple<TFOutput, TFOutput> SelfAdjointEigV2 (TFOutput input, bool? compute_v = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "SelfAdjointEigV2", MakeName ("SelfAdjointEigV2", operName));
 			desc.AddInput (input);
@@ -29783,7 +29850,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var e = new TFOutput (op, _idx++);
 			var v = new TFOutput (op, _idx++);
-			return (e, v);
+			return ValueTuple.Create<TFOutput, TFOutput>(e, v);
 		}
 
 		/// <summary>
@@ -30559,7 +30626,8 @@ namespace TensorFlow {
 		///   labels: A vector of word ids.
 		///   The TFOperation can be fetched from any of the TFOutputs returned in the tuple values, by fethching the Operation property.
 		/// </returns>
-		public (TFOutput vocab_word, TFOutput vocab_freq, TFOutput words_per_epoch, TFOutput current_epoch, TFOutput total_words_processed, TFOutput examples, TFOutput labels) Skipgram (string filename, long batch_size, long? window_size = null, long? min_count = null, float? subsample = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "vocab_word", "vocab_freq", "words_per_epoch", "current_epoch", "total_words_processed", "examples", "labels" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput, TFOutput, TFOutput, TFOutput, TFOutput> Skipgram (string filename, long batch_size, long? window_size = null, long? min_count = null, float? subsample = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "Skipgram", MakeName ("Skipgram", operName));
 			foreach ( TFOperation control in CurrentDependencies )
@@ -30585,7 +30653,7 @@ namespace TensorFlow {
 			var total_words_processed = new TFOutput (op, _idx++);
 			var examples = new TFOutput (op, _idx++);
 			var labels = new TFOutput (op, _idx++);
-			return (vocab_word, vocab_freq, words_per_epoch, current_epoch, total_words_processed, examples, labels);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput, TFOutput, TFOutput, TFOutput, TFOutput>(vocab_word, vocab_freq, words_per_epoch, current_epoch, total_words_processed, examples, labels);
 		}
 
 		/// <summary>
@@ -30750,7 +30818,8 @@ namespace TensorFlow {
 		/// <remarks>
 		///   Inputs are the logits, not probabilities.
 		/// </remarks>
-		public (TFOutput loss, TFOutput backprop) SoftmaxCrossEntropyWithLogits (TFOutput features, TFOutput labels, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "loss", "backprop" })]
+		public ValueTuple<TFOutput, TFOutput> SoftmaxCrossEntropyWithLogits (TFOutput features, TFOutput labels, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "SoftmaxCrossEntropyWithLogits", MakeName ("SoftmaxCrossEntropyWithLogits", operName));
 			desc.AddInput (features);
@@ -30762,7 +30831,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var loss = new TFOutput (op, _idx++);
 			var backprop = new TFOutput (op, _idx++);
-			return (loss, backprop);
+			return ValueTuple.Create<TFOutput, TFOutput>(loss, backprop);
 		}
 
 		/// <summary>
@@ -31350,7 +31419,8 @@ namespace TensorFlow {
 		///   the recorded global_step in the accumulator by 1, and resets the
 		///   aggregate to 0.
 		/// </remarks>
-		public (TFOutput indices, TFOutput values, TFOutput shape) SparseAccumulatorTakeGradient (TFOutput handle, TFOutput num_required, TFDataType dtype, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "indices", "values", "shape" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> SparseAccumulatorTakeGradient (TFOutput handle, TFOutput num_required, TFDataType dtype, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "SparseAccumulatorTakeGradient", MakeName ("SparseAccumulatorTakeGradient", operName));
 			desc.AddInput (handle);
@@ -31364,7 +31434,7 @@ namespace TensorFlow {
 			var indices = new TFOutput (op, _idx++);
 			var values = new TFOutput (op, _idx++);
 			var shape = new TFOutput (op, _idx++);
-			return (indices, values, shape);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(indices, values, shape);
 		}
 
 		/// <summary>
@@ -31417,7 +31487,8 @@ namespace TensorFlow {
 		///   
 		///   In the following shapes, <c>nnz</c> is the count after taking <c>thresh</c> into account.
 		/// </remarks>
-		public (TFOutput sum_indices, TFOutput sum_values, TFOutput sum_shape) SparseAdd (TFOutput a_indices, TFOutput a_values, TFOutput a_shape, TFOutput b_indices, TFOutput b_values, TFOutput b_shape, TFOutput thresh, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "sum_indices", "sum_values", "sum_shape" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> SparseAdd (TFOutput a_indices, TFOutput a_values, TFOutput a_shape, TFOutput b_indices, TFOutput b_values, TFOutput b_shape, TFOutput thresh, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "SparseAdd", MakeName ("SparseAdd", operName));
 			desc.AddInput (a_indices);
@@ -31435,7 +31506,7 @@ namespace TensorFlow {
 			var sum_indices = new TFOutput (op, _idx++);
 			var sum_values = new TFOutput (op, _idx++);
 			var sum_shape = new TFOutput (op, _idx++);
-			return (sum_indices, sum_values, sum_shape);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(sum_indices, sum_values, sum_shape);
 		}
 
 		/// <summary>
@@ -31472,7 +31543,8 @@ namespace TensorFlow {
 		///   non-empty values of the sum, and outputs the gradients w.r.t. the non-empty
 		///   values of A and B.
 		/// </remarks>
-		public (TFOutput a_val_grad, TFOutput b_val_grad) SparseAddGrad (TFOutput backprop_val_grad, TFOutput a_indices, TFOutput b_indices, TFOutput sum_indices, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "a_val_grad", "b_val_grad" })]
+		public ValueTuple<TFOutput, TFOutput> SparseAddGrad (TFOutput backprop_val_grad, TFOutput a_indices, TFOutput b_indices, TFOutput sum_indices, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "SparseAddGrad", MakeName ("SparseAddGrad", operName));
 			desc.AddInput (backprop_val_grad);
@@ -31486,7 +31558,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var a_val_grad = new TFOutput (op, _idx++);
 			var b_val_grad = new TFOutput (op, _idx++);
-			return (a_val_grad, b_val_grad);
+			return ValueTuple.Create<TFOutput, TFOutput>(a_val_grad, b_val_grad);
 		}
 
 		/// <summary>
@@ -32264,7 +32336,8 @@ namespace TensorFlow {
 		///   [    a] concat [  d e  ] = [    a   d e  ]
 		///   [b c  ]        [       ]   [b c          ]
 		/// </remarks>
-		public (TFOutput output_indices, TFOutput output_values, TFOutput output_shape) SparseConcat (TFOutput[] indices, TFOutput[] values, TFOutput[] shapes, long concat_dim, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output_indices", "output_values", "output_shape" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> SparseConcat (TFOutput[] indices, TFOutput[] values, TFOutput[] shapes, long concat_dim, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "SparseConcat", MakeName ("SparseConcat", operName));
 			desc.AddInputs (indices);
@@ -32279,7 +32352,7 @@ namespace TensorFlow {
 			var output_indices = new TFOutput (op, _idx++);
 			var output_values = new TFOutput (op, _idx++);
 			var output_shape = new TFOutput (op, _idx++);
-			return (output_indices, output_values, output_shape);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(output_indices, output_values, output_shape);
 		}
 
 		/// <summary>
@@ -32416,7 +32489,8 @@ namespace TensorFlow {
 		///   Fingerprint64("g"), FingerprintCat64(
 		///   Fingerprint64("e"), Fingerprint64("c")))
 		/// </remarks>
-		public (TFOutput output_indices, TFOutput output_values, TFOutput output_shape) SparseCross (TFOutput[] indices, TFOutput[] values, TFOutput[] shapes, TFOutput[] dense_inputs, bool hashed_output, long num_buckets, long hash_key, TFDataType out_type, TFDataType internal_type, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output_indices", "output_values", "output_shape" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> SparseCross (TFOutput[] indices, TFOutput[] values, TFOutput[] shapes, TFOutput[] dense_inputs, bool hashed_output, long num_buckets, long hash_key, TFDataType out_type, TFDataType internal_type, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "SparseCross", MakeName ("SparseCross", operName));
 			desc.AddInputs (indices);
@@ -32436,7 +32510,7 @@ namespace TensorFlow {
 			var output_indices = new TFOutput (op, _idx++);
 			var output_values = new TFOutput (op, _idx++);
 			var output_shape = new TFOutput (op, _idx++);
-			return (output_indices, output_values, output_shape);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(output_indices, output_values, output_shape);
 		}
 
 		/// <summary>
@@ -32645,7 +32719,8 @@ namespace TensorFlow {
 		///   
 		///   reverse_index_map[j] = out_j s.t. indices[j, :] == output_indices[out_j, :]
 		/// </remarks>
-		public (TFOutput output_indices, TFOutput output_values, TFOutput empty_row_indicator, TFOutput reverse_index_map) SparseFillEmptyRows (TFOutput indices, TFOutput values, TFOutput dense_shape, TFOutput default_value, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output_indices", "output_values", "empty_row_indicator", "reverse_index_map" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput, TFOutput> SparseFillEmptyRows (TFOutput indices, TFOutput values, TFOutput dense_shape, TFOutput default_value, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "SparseFillEmptyRows", MakeName ("SparseFillEmptyRows", operName));
 			desc.AddInput (indices);
@@ -32661,7 +32736,7 @@ namespace TensorFlow {
 			var output_values = new TFOutput (op, _idx++);
 			var empty_row_indicator = new TFOutput (op, _idx++);
 			var reverse_index_map = new TFOutput (op, _idx++);
-			return (output_indices, output_values, empty_row_indicator, reverse_index_map);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput, TFOutput>(output_indices, output_values, empty_row_indicator, reverse_index_map);
 		}
 
 		/// <summary>
@@ -32692,7 +32767,8 @@ namespace TensorFlow {
 		///   d_default_value = sum_{k : 0 .. N_full - 1} (
 		///   grad_values[k] * 1{k not in reverse_index_map})
 		/// </remarks>
-		public (TFOutput d_values, TFOutput d_default_value) SparseFillEmptyRowsGrad (TFOutput reverse_index_map, TFOutput grad_values, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "d_values", "d_default_value" })]
+		public ValueTuple<TFOutput, TFOutput> SparseFillEmptyRowsGrad (TFOutput reverse_index_map, TFOutput grad_values, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "SparseFillEmptyRowsGrad", MakeName ("SparseFillEmptyRowsGrad", operName));
 			desc.AddInput (reverse_index_map);
@@ -32704,7 +32780,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var d_values = new TFOutput (op, _idx++);
 			var d_default_value = new TFOutput (op, _idx++);
-			return (d_values, d_default_value);
+			return ValueTuple.Create<TFOutput, TFOutput>(d_values, d_default_value);
 		}
 
 		/// <summary>
@@ -32871,7 +32947,8 @@ namespace TensorFlow {
 		///   with a single element is returned.  Additionally, the axes can be negative,
 		///   which are interpreted according to the indexing rules in Python.
 		/// </remarks>
-		public (TFOutput output_indices, TFOutput output_values, TFOutput output_shape) SparseReduceMaxSparse (TFOutput input_indices, TFOutput input_values, TFOutput input_shape, TFOutput reduction_axes, bool? keep_dims = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output_indices", "output_values", "output_shape" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> SparseReduceMaxSparse (TFOutput input_indices, TFOutput input_values, TFOutput input_shape, TFOutput reduction_axes, bool? keep_dims = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "SparseReduceMaxSparse", MakeName ("SparseReduceMaxSparse", operName));
 			desc.AddInput (input_indices);
@@ -32889,7 +32966,7 @@ namespace TensorFlow {
 			var output_indices = new TFOutput (op, _idx++);
 			var output_values = new TFOutput (op, _idx++);
 			var output_shape = new TFOutput (op, _idx++);
-			return (output_indices, output_values, output_shape);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(output_indices, output_values, output_shape);
 		}
 
 		/// <summary>
@@ -32996,7 +33073,8 @@ namespace TensorFlow {
 		///   with a single element is returned.  Additionally, the axes can be negative,
 		///   which are interpreted according to the indexing rules in Python.
 		/// </remarks>
-		public (TFOutput output_indices, TFOutput output_values, TFOutput output_shape) SparseReduceSumSparse (TFOutput input_indices, TFOutput input_values, TFOutput input_shape, TFOutput reduction_axes, bool? keep_dims = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output_indices", "output_values", "output_shape" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> SparseReduceSumSparse (TFOutput input_indices, TFOutput input_values, TFOutput input_shape, TFOutput reduction_axes, bool? keep_dims = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "SparseReduceSumSparse", MakeName ("SparseReduceSumSparse", operName));
 			desc.AddInput (input_indices);
@@ -33014,7 +33092,7 @@ namespace TensorFlow {
 			var output_indices = new TFOutput (op, _idx++);
 			var output_values = new TFOutput (op, _idx++);
 			var output_shape = new TFOutput (op, _idx++);
-			return (output_indices, output_values, output_shape);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(output_indices, output_values, output_shape);
 		}
 
 		/// <summary>
@@ -33050,7 +33128,8 @@ namespace TensorFlow {
 		///   If the tensor has rank <c>R</c> and <c>N</c> non-empty values, <c>input_indices</c> has
 		///   shape <c>[N, R]</c>, input_values has length <c>N</c>, and input_shape has length <c>R</c>.
 		/// </remarks>
-		public (TFOutput output_indices, TFOutput output_values) SparseReorder (TFOutput input_indices, TFOutput input_values, TFOutput input_shape, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output_indices", "output_values" })]
+		public ValueTuple<TFOutput, TFOutput> SparseReorder (TFOutput input_indices, TFOutput input_values, TFOutput input_shape, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "SparseReorder", MakeName ("SparseReorder", operName));
 			desc.AddInput (input_indices);
@@ -33063,7 +33142,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var output_indices = new TFOutput (op, _idx++);
 			var output_values = new TFOutput (op, _idx++);
-			return (output_indices, output_values);
+			return ValueTuple.Create<TFOutput, TFOutput>(output_indices, output_values);
 		}
 
 		/// <summary>
@@ -33108,7 +33187,8 @@ namespace TensorFlow {
 		///   <c>input_shape</c> has length <c>R_in</c>, <c>output_indices</c> has shape <c>[N, R_out]</c>, and
 		///   <c>output_shape</c> has length <c>R_out</c>.
 		/// </remarks>
-		public (TFOutput output_indices, TFOutput output_shape) SparseReshape (TFOutput input_indices, TFOutput input_shape, TFOutput new_shape, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output_indices", "output_shape" })]
+		public ValueTuple<TFOutput, TFOutput> SparseReshape (TFOutput input_indices, TFOutput input_shape, TFOutput new_shape, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "SparseReshape", MakeName ("SparseReshape", operName));
 			desc.AddInput (input_indices);
@@ -33121,7 +33201,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var output_indices = new TFOutput (op, _idx++);
 			var output_shape = new TFOutput (op, _idx++);
-			return (output_indices, output_shape);
+			return ValueTuple.Create<TFOutput, TFOutput>(output_indices, output_shape);
 		}
 
 		/// <summary>
@@ -33558,7 +33638,8 @@ namespace TensorFlow {
 		///   [ d e  ]
 		///   [      ]
 		/// </remarks>
-		public (TFOutput output_indices, TFOutput output_values, TFOutput output_shape) SparseSlice (TFOutput indices, TFOutput values, TFOutput shape, TFOutput start, TFOutput size, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output_indices", "output_values", "output_shape" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> SparseSlice (TFOutput indices, TFOutput values, TFOutput shape, TFOutput start, TFOutput size, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "SparseSlice", MakeName ("SparseSlice", operName));
 			desc.AddInput (indices);
@@ -33574,7 +33655,7 @@ namespace TensorFlow {
 			var output_indices = new TFOutput (op, _idx++);
 			var output_values = new TFOutput (op, _idx++);
 			var output_shape = new TFOutput (op, _idx++);
-			return (output_indices, output_values, output_shape);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(output_indices, output_values, output_shape);
 		}
 
 		/// <summary>
@@ -33656,7 +33737,8 @@ namespace TensorFlow {
 		///   
 		///   Inputs are the logits, not probabilities.
 		/// </remarks>
-		public (TFOutput loss, TFOutput backprop) SparseSoftmaxCrossEntropyWithLogits (TFOutput features, TFOutput labels, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "loss", "backprop" })]
+		public ValueTuple<TFOutput, TFOutput> SparseSoftmaxCrossEntropyWithLogits (TFOutput features, TFOutput labels, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "SparseSoftmaxCrossEntropyWithLogits", MakeName ("SparseSoftmaxCrossEntropyWithLogits", operName));
 			desc.AddInput (features);
@@ -33668,7 +33750,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var loss = new TFOutput (op, _idx++);
 			var backprop = new TFOutput (op, _idx++);
-			return (loss, backprop);
+			return ValueTuple.Create<TFOutput, TFOutput>(loss, backprop);
 		}
 
 		/// <summary>
@@ -33705,7 +33787,8 @@ namespace TensorFlow {
 		/// <remarks>
 		///   Assumes the two SparseTensors have the same shape, i.e., no broadcasting.
 		/// </remarks>
-		public (TFOutput output_indices, TFOutput output_values) SparseSparseMaximum (TFOutput a_indices, TFOutput a_values, TFOutput a_shape, TFOutput b_indices, TFOutput b_values, TFOutput b_shape, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output_indices", "output_values" })]
+		public ValueTuple<TFOutput, TFOutput> SparseSparseMaximum (TFOutput a_indices, TFOutput a_values, TFOutput a_shape, TFOutput b_indices, TFOutput b_values, TFOutput b_shape, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "SparseSparseMaximum", MakeName ("SparseSparseMaximum", operName));
 			desc.AddInput (a_indices);
@@ -33721,7 +33804,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var output_indices = new TFOutput (op, _idx++);
 			var output_values = new TFOutput (op, _idx++);
-			return (output_indices, output_values);
+			return ValueTuple.Create<TFOutput, TFOutput>(output_indices, output_values);
 		}
 
 		/// <summary>
@@ -33758,7 +33841,8 @@ namespace TensorFlow {
 		/// <remarks>
 		///   Assumes the two SparseTensors have the same shape, i.e., no broadcasting.
 		/// </remarks>
-		public (TFOutput output_indices, TFOutput output_values) SparseSparseMinimum (TFOutput a_indices, TFOutput a_values, TFOutput a_shape, TFOutput b_indices, TFOutput b_values, TFOutput b_shape, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output_indices", "output_values" })]
+		public ValueTuple<TFOutput, TFOutput> SparseSparseMinimum (TFOutput a_indices, TFOutput a_values, TFOutput a_shape, TFOutput b_indices, TFOutput b_values, TFOutput b_shape, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "SparseSparseMinimum", MakeName ("SparseSparseMinimum", operName));
 			desc.AddInput (a_indices);
@@ -33774,7 +33858,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var output_indices = new TFOutput (op, _idx++);
 			var output_values = new TFOutput (op, _idx++);
-			return (output_indices, output_values);
+			return ValueTuple.Create<TFOutput, TFOutput>(output_indices, output_values);
 		}
 
 		/// <summary>
@@ -33829,7 +33913,8 @@ namespace TensorFlow {
 		///   [ d e  ]
 		///   [      ]
 		/// </remarks>
-		public (TFOutput[] output_indices, TFOutput[] output_values, TFOutput[] output_shape) SparseSplit (TFOutput split_dim, TFOutput indices, TFOutput values, TFOutput shape, long num_split, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output_indices", "output_values", "output_shape" })]
+		public ValueTuple<TFOutput[], TFOutput[], TFOutput[]> SparseSplit (TFOutput split_dim, TFOutput indices, TFOutput values, TFOutput shape, long num_split, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "SparseSplit", MakeName ("SparseSplit", operName));
 			desc.AddInput (split_dim);
@@ -33858,7 +33943,7 @@ namespace TensorFlow {
 			for (int i = 0; i < _n; i++)
 				output_shape [i] = new TFOutput (op, _idx++);
 			
-			return (output_indices, output_values, output_shape);
+			return ValueTuple.Create<TFOutput[], TFOutput[], TFOutput[]>(output_indices, output_values, output_shape);
 		}
 
 		/// <summary>
@@ -34136,7 +34221,8 @@ namespace TensorFlow {
 		///   dimension contains the result of <c>set_operation</c> applied to the corresponding
 		///   <c>[0...n-1]</c> dimension of <c>set</c>.
 		/// </remarks>
-		public (TFOutput result_indices, TFOutput result_values, TFOutput result_shape) SparseToSparseSetOperation (TFOutput set1_indices, TFOutput set1_values, TFOutput set1_shape, TFOutput set2_indices, TFOutput set2_values, TFOutput set2_shape, string set_operation, bool? validate_indices = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "result_indices", "result_values", "result_shape" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> SparseToSparseSetOperation (TFOutput set1_indices, TFOutput set1_values, TFOutput set1_shape, TFOutput set2_indices, TFOutput set2_values, TFOutput set2_shape, string set_operation, bool? validate_indices = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "SparseToSparseSetOperation", MakeName ("SparseToSparseSetOperation", operName));
 			desc.AddInput (set1_indices);
@@ -34157,7 +34243,7 @@ namespace TensorFlow {
 			var result_indices = new TFOutput (op, _idx++);
 			var result_values = new TFOutput (op, _idx++);
 			var result_shape = new TFOutput (op, _idx++);
-			return (result_indices, result_values, result_shape);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(result_indices, result_values, result_shape);
 		}
 
 		/// <summary>
@@ -35567,7 +35653,8 @@ namespace TensorFlow {
 		///   shape = [2, 3]
 		///   values = ['hello', 'world', 'a', 'b', 'c']
 		/// </remarks>
-		public (TFOutput indices, TFOutput values, TFOutput shape) StringSplit (TFOutput input, TFOutput delimiter, bool? skip_empty = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "indices", "values", "shape" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> StringSplit (TFOutput input, TFOutput delimiter, bool? skip_empty = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "StringSplit", MakeName ("StringSplit", operName));
 			desc.AddInput (input);
@@ -35583,7 +35670,7 @@ namespace TensorFlow {
 			var indices = new TFOutput (op, _idx++);
 			var values = new TFOutput (op, _idx++);
 			var shape = new TFOutput (op, _idx++);
-			return (indices, values, shape);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(indices, values, shape);
 		}
 
 		/// <summary>
@@ -35974,7 +36061,8 @@ namespace TensorFlow {
 		///   s, _, _ = svd(a, compute_uv=False)
 		///    </code>
 		/// </remarks>
-		public (TFOutput s, TFOutput u, TFOutput v) Svd (TFOutput input, bool? compute_uv = null, bool? full_matrices = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "s", "u", "v" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> Svd (TFOutput input, bool? compute_uv = null, bool? full_matrices = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "Svd", MakeName ("Svd", operName));
 			desc.AddInput (input);
@@ -35992,7 +36080,7 @@ namespace TensorFlow {
 			var s = new TFOutput (op, _idx++);
 			var u = new TFOutput (op, _idx++);
 			var v = new TFOutput (op, _idx++);
-			return (s, u, v);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(s, u, v);
 		}
 
 		/// <summary>
@@ -36019,7 +36107,8 @@ namespace TensorFlow {
 		///   
 		///   See also <c>RefSwitch</c> and <c>Merge</c>.
 		/// </remarks>
-		public (TFOutput output_false, TFOutput output_true) Switch (TFOutput data, TFOutput pred, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output_false", "output_true" })]
+		public ValueTuple<TFOutput, TFOutput> Switch (TFOutput data, TFOutput pred, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "Switch", MakeName ("Switch", operName));
 			desc.AddInput (data);
@@ -36031,7 +36120,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var output_false = new TFOutput (op, _idx++);
 			var output_true = new TFOutput (op, _idx++);
-			return (output_false, output_true);
+			return ValueTuple.Create<TFOutput, TFOutput>(output_false, output_true);
 		}
 
 		/// <summary>
@@ -36151,7 +36240,8 @@ namespace TensorFlow {
 		///   shape = [2 50]
 		///    </code>
 		/// </remarks>
-		public (TFOutput sparse_indices, TFOutput sparse_values, TFOutput sparse_shape) TakeManySparseFromTensorsMap (TFOutput sparse_handles, TFDataType dtype, string container = null, string shared_name = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "sparse_indices", "sparse_values", "sparse_shape" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> TakeManySparseFromTensorsMap (TFOutput sparse_handles, TFDataType dtype, string container = null, string shared_name = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "TakeManySparseFromTensorsMap", MakeName ("TakeManySparseFromTensorsMap", operName));
 			desc.AddInput (sparse_handles);
@@ -36170,7 +36260,7 @@ namespace TensorFlow {
 			var sparse_indices = new TFOutput (op, _idx++);
 			var sparse_values = new TFOutput (op, _idx++);
 			var sparse_shape = new TFOutput (op, _idx++);
-			return (sparse_indices, sparse_values, sparse_shape);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(sparse_indices, sparse_values, sparse_shape);
 		}
 
 		/// <summary>
@@ -36376,7 +36466,8 @@ namespace TensorFlow {
 		///   lengths:
 		///   The TFOperation can be fetched from any of the TFOutputs returned in the tuple values, by fethching the Operation property.
 		/// </returns>
-		public (TFOutput value, TFOutput lengths) TensorArrayConcatV2 (TFOutput handle, TFOutput flow_in, TFDataType dtype, TFShape element_shape_except0 = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "value", "lengths" })]
+		public ValueTuple<TFOutput, TFOutput> TensorArrayConcatV2 (TFOutput handle, TFOutput flow_in, TFDataType dtype, TFShape element_shape_except0 = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "TensorArrayConcatV2", MakeName ("TensorArrayConcatV2", operName));
 			desc.AddInput (handle);
@@ -36392,7 +36483,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var value = new TFOutput (op, _idx++);
 			var lengths = new TFOutput (op, _idx++);
-			return (value, lengths);
+			return ValueTuple.Create<TFOutput, TFOutput>(value, lengths);
 		}
 
 		/// <summary>
@@ -36441,7 +36532,8 @@ namespace TensorFlow {
 		///   
 		///   All elements must have the same shape (excepting the first dimension).
 		/// </remarks>
-		public (TFOutput value, TFOutput lengths) TensorArrayConcatV3 (TFOutput handle, TFOutput flow_in, TFDataType dtype, TFShape element_shape_except0 = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "value", "lengths" })]
+		public ValueTuple<TFOutput, TFOutput> TensorArrayConcatV3 (TFOutput handle, TFOutput flow_in, TFDataType dtype, TFShape element_shape_except0 = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "TensorArrayConcatV3", MakeName ("TensorArrayConcatV3", operName));
 			desc.AddInput (handle);
@@ -36457,7 +36549,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var value = new TFOutput (op, _idx++);
 			var lengths = new TFOutput (op, _idx++);
-			return (value, lengths);
+			return ValueTuple.Create<TFOutput, TFOutput>(value, lengths);
 		}
 
 		/// <summary>
@@ -36640,7 +36732,8 @@ namespace TensorFlow {
 		///   name when performing the creation / lookup, so that each separate gradient
 		///   calculation gets its own TensorArray accumulator.
 		/// </remarks>
-		public (TFOutput grad_handle, TFOutput flow_out) TensorArrayGradV3 (TFOutput handle, TFOutput flow_in, string source, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "grad_handle", "flow_out" })]
+		public ValueTuple<TFOutput, TFOutput> TensorArrayGradV3 (TFOutput handle, TFOutput flow_in, string source, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "TensorArrayGradV3", MakeName ("TensorArrayGradV3", operName));
 			desc.AddInput (handle);
@@ -36653,7 +36746,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var grad_handle = new TFOutput (op, _idx++);
 			var flow_out = new TFOutput (op, _idx++);
-			return (grad_handle, flow_out);
+			return ValueTuple.Create<TFOutput, TFOutput>(grad_handle, flow_out);
 		}
 
 		/// <summary>
@@ -37059,7 +37152,8 @@ namespace TensorFlow {
 		/// <remarks>
 		///   Write data via Write and read via Read or Pack.
 		/// </remarks>
-		public (TFOutput handle, TFOutput flow) TensorArrayV3 (TFOutput size, TFDataType dtype, TFShape element_shape = null, bool? dynamic_size = null, bool? clear_after_read = null, bool? identical_element_shapes = null, string tensor_array_name = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "handle", "flow" })]
+		public ValueTuple<TFOutput, TFOutput> TensorArrayV3 (TFOutput size, TFDataType dtype, TFShape element_shape = null, bool? dynamic_size = null, bool? clear_after_read = null, bool? identical_element_shapes = null, string tensor_array_name = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "TensorArrayV3", MakeName ("TensorArrayV3", operName));
 			desc.AddInput (size);
@@ -37086,7 +37180,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var handle = new TFOutput (op, _idx++);
 			var flow = new TFOutput (op, _idx++);
-			return (handle, flow);
+			return ValueTuple.Create<TFOutput, TFOutput>(handle, flow);
 		}
 
 		/// <summary>
@@ -37340,7 +37434,8 @@ namespace TensorFlow {
 		///   element_dtype: the type of elements in the list
 		///   element_shape: the shape of the output tensor
 		/// </remarks>
-		public (TFOutput output_handle, TFOutput tensor) TensorListPopBack (TFOutput input_handle, TFDataType element_dtype, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "output_handle", "tensor" })]
+		public ValueTuple<TFOutput, TFOutput> TensorListPopBack (TFOutput input_handle, TFDataType element_dtype, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "TensorListPopBack", MakeName ("TensorListPopBack", operName));
 			desc.AddInput (input_handle);
@@ -37352,7 +37447,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var output_handle = new TFOutput (op, _idx++);
 			var tensor = new TFOutput (op, _idx++);
-			return (output_handle, tensor);
+			return ValueTuple.Create<TFOutput, TFOutput>(output_handle, tensor);
 		}
 
 		/// <summary>
@@ -37922,7 +38017,8 @@ namespace TensorFlow {
 		///   the sampled candidates must be chosen independently of the context and of the
 		///   true labels.
 		/// </remarks>
-		public (TFOutput sampled_candidates, TFOutput true_expected_count, TFOutput sampled_expected_count) ThreadUnsafeUnigramCandidateSampler (TFOutput true_classes, long num_true, long num_sampled, bool unique, long range_max, long? seed = null, long? seed2 = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "sampled_candidates", "true_expected_count", "sampled_expected_count" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> ThreadUnsafeUnigramCandidateSampler (TFOutput true_classes, long num_true, long num_sampled, bool unique, long range_max, long? seed = null, long? seed2 = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "ThreadUnsafeUnigramCandidateSampler", MakeName ("ThreadUnsafeUnigramCandidateSampler", operName));
 			desc.AddInput (true_classes);
@@ -37944,7 +38040,7 @@ namespace TensorFlow {
 			var sampled_candidates = new TFOutput (op, _idx++);
 			var true_expected_count = new TFOutput (op, _idx++);
 			var sampled_expected_count = new TFOutput (op, _idx++);
-			return (sampled_candidates, true_expected_count, sampled_expected_count);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(sampled_candidates, true_expected_count, sampled_expected_count);
 		}
 
 		/// <summary>
@@ -38080,7 +38176,8 @@ namespace TensorFlow {
 		///   
 		///   If <c>k</c> varies dynamically, use <c>TopKV2</c> below.
 		/// </remarks>
-		public (TFOutput values, TFOutput indices) TopK (TFOutput input, long k, bool? sorted = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "values", "indices" })]
+		public ValueTuple<TFOutput, TFOutput> TopK (TFOutput input, long k, bool? sorted = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "TopK", MakeName ("TopK", operName));
 			desc.AddInput (input);
@@ -38095,7 +38192,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var values = new TFOutput (op, _idx++);
 			var indices = new TFOutput (op, _idx++);
-			return (values, indices);
+			return ValueTuple.Create<TFOutput, TFOutput>(values, indices);
 		}
 
 		/// <summary>
@@ -38134,7 +38231,8 @@ namespace TensorFlow {
 		///   
 		///   If two elements are equal, the lower-index element appears first.
 		/// </remarks>
-		public (TFOutput values, TFOutput indices) TopKV2 (TFOutput input, TFOutput k, bool? sorted = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "values", "indices" })]
+		public ValueTuple<TFOutput, TFOutput> TopKV2 (TFOutput input, TFOutput k, bool? sorted = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "TopKV2", MakeName ("TopKV2", operName));
 			desc.AddInput (input);
@@ -38149,7 +38247,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var values = new TFOutput (op, _idx++);
 			var indices = new TFOutput (op, _idx++);
-			return (values, indices);
+			return ValueTuple.Create<TFOutput, TFOutput>(values, indices);
 		}
 
 		/// <summary>
@@ -38427,7 +38525,8 @@ namespace TensorFlow {
 		///   trainable variables and optimizer state from TPU memory. This op enables
 		///   functionality equivalent to AdagradOptimizer.
 		/// </remarks>
-		public (TFOutput parameters, TFOutput accumulators) TPUEmbeddingRetrieveAdagradParameters (string tpu_embedding_config, long table_id, long num_hosts, long host_id, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "parameters", "accumulators" })]
+		public ValueTuple<TFOutput, TFOutput> TPUEmbeddingRetrieveAdagradParameters (string tpu_embedding_config, long table_id, long num_hosts, long host_id, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "TPUEmbeddingRetrieveAdagradParameters", MakeName ("TPUEmbeddingRetrieveAdagradParameters", operName));
 			foreach ( TFOperation control in CurrentDependencies )
@@ -38441,7 +38540,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var parameters = new TFOutput (op, _idx++);
 			var accumulators = new TFOutput (op, _idx++);
-			return (parameters, accumulators);
+			return ValueTuple.Create<TFOutput, TFOutput>(parameters, accumulators);
 		}
 
 		/// <summary>
@@ -38913,7 +39012,8 @@ namespace TensorFlow {
 		///   the sampled candidates must be chosen independently of the context and of the
 		///   true labels.
 		/// </remarks>
-		public (TFOutput sampled_candidates, TFOutput true_expected_count, TFOutput sampled_expected_count) UniformCandidateSampler (TFOutput true_classes, long num_true, long num_sampled, bool unique, long range_max, long? seed = null, long? seed2 = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "sampled_candidates", "true_expected_count", "sampled_expected_count" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> UniformCandidateSampler (TFOutput true_classes, long num_true, long num_sampled, bool unique, long range_max, long? seed = null, long? seed2 = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "UniformCandidateSampler", MakeName ("UniformCandidateSampler", operName));
 			desc.AddInput (true_classes);
@@ -38935,7 +39035,7 @@ namespace TensorFlow {
 			var sampled_candidates = new TFOutput (op, _idx++);
 			var true_expected_count = new TFOutput (op, _idx++);
 			var sampled_expected_count = new TFOutput (op, _idx++);
-			return (sampled_candidates, true_expected_count, sampled_expected_count);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(sampled_candidates, true_expected_count, sampled_expected_count);
 		}
 
 		/// <summary>
@@ -38973,7 +39073,8 @@ namespace TensorFlow {
 		///   idx ==&amp;gt; [0, 0, 1, 2, 2, 2, 3, 4, 4]
 		///    </code>
 		/// </remarks>
-		public (TFOutput y, TFOutput idx) Unique (TFOutput x, TFDataType? out_idx = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "y", "idx" })]
+		public ValueTuple<TFOutput, TFOutput> Unique (TFOutput x, TFDataType? out_idx = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "Unique", MakeName ("Unique", operName));
 			desc.AddInput (x);
@@ -38987,7 +39088,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var y = new TFOutput (op, _idx++);
 			var idx = new TFOutput (op, _idx++);
-			return (y, idx);
+			return ValueTuple.Create<TFOutput, TFOutput>(y, idx);
 		}
 
 		/// <summary>
@@ -39058,7 +39159,8 @@ namespace TensorFlow {
 		///   idx ==&amp;gt; [0, 1, 1]
 		///    </code>
 		/// </remarks>
-		public (TFOutput y, TFOutput idx) UniqueV2 (TFOutput x, TFOutput axis, TFDataType? out_idx = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "y", "idx" })]
+		public ValueTuple<TFOutput, TFOutput> UniqueV2 (TFOutput x, TFOutput axis, TFDataType? out_idx = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "UniqueV2", MakeName ("UniqueV2", operName));
 			desc.AddInput (x);
@@ -39073,7 +39175,7 @@ namespace TensorFlow {
 			int _idx = 0;
 			var y = new TFOutput (op, _idx++);
 			var idx = new TFOutput (op, _idx++);
-			return (y, idx);
+			return ValueTuple.Create<TFOutput, TFOutput>(y, idx);
 		}
 
 		/// <summary>
@@ -39114,7 +39216,8 @@ namespace TensorFlow {
 		///   count ==&amp;gt; [2, 1, 3, 1, 2]
 		///    </code>
 		/// </remarks>
-		public (TFOutput y, TFOutput idx, TFOutput count) UniqueWithCounts (TFOutput x, TFDataType? out_idx = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "y", "idx", "count" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> UniqueWithCounts (TFOutput x, TFDataType? out_idx = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "UniqueWithCounts", MakeName ("UniqueWithCounts", operName));
 			desc.AddInput (x);
@@ -39129,7 +39232,7 @@ namespace TensorFlow {
 			var y = new TFOutput (op, _idx++);
 			var idx = new TFOutput (op, _idx++);
 			var count = new TFOutput (op, _idx++);
-			return (y, idx, count);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(y, idx, count);
 		}
 
 		/// <summary>
@@ -39205,7 +39308,8 @@ namespace TensorFlow {
 		///   count ==&amp;gt; [1, 2]
 		///    </code>
 		/// </remarks>
-		public (TFOutput y, TFOutput idx, TFOutput count) UniqueWithCountsV2 (TFOutput x, TFOutput axis, TFDataType? out_idx = null, string operName = null)
+		[return: System.Runtime.CompilerServices.TupleElementNames(new[] { "y", "idx", "count" })]
+		public ValueTuple<TFOutput, TFOutput, TFOutput> UniqueWithCountsV2 (TFOutput x, TFOutput axis, TFDataType? out_idx = null, string operName = null)
 		{
 			var desc = new TFOperationDesc (this, "UniqueWithCountsV2", MakeName ("UniqueWithCountsV2", operName));
 			desc.AddInput (x);
@@ -39221,7 +39325,7 @@ namespace TensorFlow {
 			var y = new TFOutput (op, _idx++);
 			var idx = new TFOutput (op, _idx++);
 			var count = new TFOutput (op, _idx++);
-			return (y, idx, count);
+			return ValueTuple.Create<TFOutput, TFOutput, TFOutput>(y, idx, count);
 		}
 
 		/// <summary>

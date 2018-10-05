@@ -51,19 +51,19 @@ namespace TensorFlow
 		/// Returns the ReadVariableOp that is used to fetch the value of the variable from the graph.
 		/// </summary>
 		/// <value>The read op.</value>
-		public TFOutput Read => readHandle;
+		public TFOutput Read { get { return readHandle; } }
 
 		/// <summary>
 		/// Returns the AssignVariableOp that is used to assign the initial value to the variable from the graph.
 		/// </summary>
 		/// <value>The assign op.</value>
-		public TFOperation Assign => assignOp;
+		public TFOperation Assign { get { return assignOp; } }
 
 		/// <summary>
 		/// Returns the VarHandleOp that was created using the shape of the initial value.
 		/// </summary>
 		/// <value>The variable op.</value>
-		public TFOutput VariableOp => variableHandle;
+        public TFOutput VariableOp { get { return variableHandle; } }
 
 		internal Variable (TFOutput variableHandle, TFOutput readHandle, TFOperation assignOp)
 		{
