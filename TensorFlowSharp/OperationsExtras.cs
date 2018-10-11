@@ -574,7 +574,9 @@ namespace TensorFlow
 		{
 			using (WithScope (this.MakeName ("cond", operName))) {
 				// Add the Switch to the graph.
-				(TFOutput p_2, TFOutput p_1) = Switch (pred, pred);
+				ValueTuple<TFOutput, TFOutput> tuple1 = Switch (pred, pred);
+                TFOutput p_2 = tuple1.Item1;
+                TFOutput p_1 = tuple1.Item2;
 				TFOutput pivot_t = Identity (p_1, operName: "switch_t");
 				TFOutput pivot_f = Identity (p_2, operName: "switch_f");
 				pred = Identity (pred, operName: "pred_id");
@@ -593,8 +595,9 @@ namespace TensorFlow
 				}
 
 				// Add the final merge to the graph.
-				(TFOutput merges, TFOutput index) = Merge (new [] { res_f, res_t });
-
+				ValueTuple<TFOutput, TFOutput> tuple2 = Merge (new [] { res_f, res_t });
+                TFOutput merges = tuple2.Item1;
+                TFOutput index = tuple2.Item2;
 				return merges;
 			}
 		}
@@ -639,7 +642,7 @@ namespace TensorFlow
 
 			int expanded_num_dims = ndims + 1;
 			if (axis < -expanded_num_dims || axis >= expanded_num_dims)
-				throw new InvalidOperationException ($"axis = {axis} not in [{-expanded_num_dims}, {expanded_num_dims}]");
+                throw new InvalidOperationException(String.Format("axis = {0} not in [{1}, {2}]", axis, -expanded_num_dims, expanded_num_dims));
 
 			return Pack (values, axis: axis, operName: operName);
 		}
