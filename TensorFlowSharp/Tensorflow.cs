@@ -45,7 +45,7 @@ namespace TensorFlow
 		public const string TensorFlowLibrary = "libtensorflow";
 		public const string TensorFlowLibraryGPU = "libtensorflowgpu";
 
-		internal static string GetStr (this IntPtr x) => Marshal.PtrToStringAnsi (x);
+		internal static string GetStr (this IntPtr x) { return Marshal.PtrToStringAnsi (x); }
 	}
 
 	/// <summary>
@@ -72,7 +72,7 @@ namespace TensorFlow
 		/// Returns the version of the TensorFlow runtime in use.
 		/// </summary>
 		/// <value>The version.</value>
-		public static string Version => TF_Version ().GetStr ();
+		public static string Version { get { return TF_Version ().GetStr (); } }
 
 		// extern size_t TF_DataTypeSize (TF_DataType dt);
 		[DllImport (NativeBinding.TensorFlowLibrary)]
@@ -83,7 +83,7 @@ namespace TensorFlow
 		/// </summary>
 		/// <returns>The data type size.</returns>
 		/// <param name="dt">Dt.</param>
-		public static long GetDataTypeSize (TFDataType dt) => (long)TF_DataTypeSize (dt);
+		public static long GetDataTypeSize (TFDataType dt) { return (long)TF_DataTypeSize (dt); }
 
 		// extern TF_Buffer * TF_GetAllOpList ();
 		[DllImport (NativeBinding.TensorFlowLibrary)]
@@ -177,7 +177,7 @@ namespace TensorFlow
 		/// Returns the opaque handle to the object that this TFDisposable owns.
 		/// </summary>
 		/// <value>The handle.</value>
-		public IntPtr Handle => handle;
+		public IntPtr Handle { get { return handle; } }
 
 		static TFDisposable ()
 		{
@@ -381,7 +381,7 @@ namespace TensorFlow
 		/// Gets a human-readable status message.
 		/// </summary>
 		/// <value>The status message.</value>
-		public string StatusMessage => TF_Message (handle).GetStr ();
+		public string StatusMessage { get { return TF_Message (handle).GetStr (); } }
 
 		/// <summary>
 		/// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:TensorFlow.TFStatus"/>.
@@ -400,13 +400,13 @@ namespace TensorFlow
 		/// Gets a value indicating whether this <see cref="T:TensorFlow.TFStatus"/> state has been set to ok.
 		/// </summary>
 		/// <value><c>true</c> if ok; otherwise, <c>false</c>.</value>
-		public bool Ok => StatusCode == TFCode.Ok;
+		public bool Ok { get { return StatusCode == TFCode.Ok; } }
 
 		/// <summary>
 		/// Gets a value indicating whether this <see cref="T:TensorFlow.TFStatus"/> state has been set to an error.
 		/// </summary>
 		/// <value><c>true</c> if error; otherwise, <c>false</c>.</value>
-		public bool Error => StatusCode != TFCode.Ok;
+		public bool Error { get { return StatusCode != TFCode.Ok; } }
 
 		/// <summary>
 		/// Convenience method that raises an exception if the current status is an error.
@@ -562,10 +562,14 @@ namespace TensorFlow
 		/// </summary>
 		public TFGraph () : base (TF_NewGraph ())
 		{
+            this.CurrentNameScope = "";
+            this.CurrentDependencies = new TFOperation [0];
 		}
 
 		internal TFGraph (IntPtr handle) : base (handle)
 		{
+            this.CurrentNameScope = "";
+            this.CurrentDependencies = new TFOperation [0];
 		}
 
 		// extern void TF_DeleteGraph (TF_Graph *);
@@ -663,7 +667,7 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();
 			if (outputGraphDef == null)
-				throw new ArgumentNullException (nameof (outputGraphDef));
+				throw new ArgumentNullException (/*nameof*/ ("outputGraphDef"));
 
 			var cstatus = TFStatus.Setup (status);
 			unsafe
@@ -689,9 +693,9 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();
 			if (graphDef == null)
-				throw new ArgumentNullException (nameof (graphDef));
+				throw new ArgumentNullException (/*nameof*/ ("graphDef"));
 			if (prefix == null)
-				throw new ArgumentNullException (nameof (prefix));
+				throw new ArgumentNullException (/*nameof*/ ("prefix"));
 
 			using (var options = new TFImportGraphDefOptions ()) {
 				options.SetPrefix (prefix);
@@ -711,9 +715,9 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();
 			if (graphDef == null)
-				throw new ArgumentNullException (nameof (graphDef));
+				throw new ArgumentNullException (/*nameof*/ ("graphDef"));
 			if (options == null)
-				throw new ArgumentNullException (nameof (options));
+				throw new ArgumentNullException (/*nameof*/ ("options"));
 
 			var cstatus = TFStatus.Setup (status);
 			unsafe
@@ -735,9 +739,9 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();
 			if (buffer == null)
-				throw new ArgumentNullException (nameof (buffer));
+				throw new ArgumentNullException (/*nameof*/ ("buffer"));
 			if (prefix == null)
-				throw new ArgumentNullException (nameof (prefix));
+				throw new ArgumentNullException (/*nameof*/ ("prefix"));
 			using (var options = new TFImportGraphDefOptions ()) {
 				options.SetPrefix (prefix);
 				Import (buffer, options, status);
@@ -759,9 +763,9 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();
 			if (buffer == null)
-				throw new ArgumentNullException (nameof (buffer));
+				throw new ArgumentNullException (/*nameof*/ ("buffer"));
 			if (options == null)
-				throw new ArgumentNullException (nameof (options));
+				throw new ArgumentNullException (/*nameof*/ ("options"));
 			var cstatus = TFStatus.Setup (status);
 			using (var tb = new TFBuffer (buffer, 0, buffer.Length)) 
 				Import (tb, options, status);
@@ -834,7 +838,7 @@ namespace TensorFlow
 		/// Returns the current name scope in use, to change this, use the WithScope method.
 		/// </summary>
 		/// <value>The current name scope.</value>
-		public string CurrentNameScope { get; internal set; } = "";
+		public string CurrentNameScope { get; internal set; }
 
 		/// <summary>
 		/// Creates a new namescope by setting the scope to the description provided.
@@ -880,7 +884,7 @@ namespace TensorFlow
 		/// use the WithDependencies method.
 		/// </summary>
 		/// <value>The current input dependencies to be used for new tensors and operations.</value>
-		public TFOperation [] CurrentDependencies { get; internal set; } = new TFOperation [0];
+		public TFOperation [] CurrentDependencies { get; internal set; }
 
 		/// <summary>
 		/// Adds new dependencies for new tensors and operations created while the context is active.
@@ -940,9 +944,9 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();
 			if (graphDef == null)
-				throw new ArgumentNullException (nameof (graphDef));
+				throw new ArgumentNullException (/*nameof*/ ("graphDef"));
 			if (options == null)
-				throw new ArgumentNullException (nameof (options));
+				throw new ArgumentNullException (/*nameof*/ ("options"));
 			var cstatus = TFStatus.Setup (status);
 
 			unsafe
@@ -1028,9 +1032,9 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();
 			if (inputs == null)
-				throw new ArgumentNullException (nameof (inputs));
+				throw new ArgumentNullException (/*nameof*/ ("inputs"));
 			if (constructor == null)
-				throw new ArgumentNullException (nameof (constructor));
+				throw new ArgumentNullException (/*nameof*/ ("constructor"));
 			var cstatus = TFStatus.Setup (status);
 			TFWhileParams result = TF_NewWhile (handle, inputs, inputs.Length, cstatus.handle);
 			if (cstatus.Error)
@@ -1099,12 +1103,12 @@ namespace TensorFlow
 		public TFOutput [] AddGradients (TFOutput [] y, TFOutput [] x, TFOutput [] dx = null, TFStatus status = null)
 		{
 			if (y == null)
-				throw new ArgumentNullException (nameof (y));
+				throw new ArgumentNullException (/*nameof*/ ("y"));
 			if (x == null)
-				throw new ArgumentNullException (nameof (x));
+				throw new ArgumentNullException (/*nameof*/ ("x"));
 			if (dx != null) {
 				if (dx.Length != y.Length)
-					throw new ArgumentException ("If dx is not null, the size of the gradients must match the size of y", nameof (dx));
+					throw new ArgumentException ("If dx is not null, the size of the gradients must match the size of y", /*nameof*/ ("dx"));
 			}
 
 			var cstatus = TFStatus.Setup (status);
@@ -1262,10 +1266,10 @@ namespace TensorFlow
 					      TFStatus status = null)
 		{
 			if (functionName == null)
-				throw new ArgumentNullException (nameof (functionName));
+				throw new ArgumentNullException (/*nameof*/ ("functionName"));
 			if (outputs == null) {
 				if (outputNames != null)
-					throw new ArgumentException ("outputs is null, but outputNames is not", nameof (outputNames));
+					throw new ArgumentException ("outputs is null, but outputNames is not", /*nameof*/ ("outputNames"));
 			} else {
 				if (outputNames != null && outputs.Length != outputNames.Length)
 					throw new ArgumentException ("the outputs and outputNames array are specified, but have different lenghts");
@@ -1317,7 +1321,7 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();
 			if (outputVersionDef == null)
-				throw new ArgumentNullException (nameof (outputVersionDef));
+				throw new ArgumentNullException (/*nameof*/ ("outputVersionDef"));
 			
 			var cstatus = TFStatus.Setup (status);
 			unsafe {
@@ -1333,7 +1337,7 @@ namespace TensorFlow
 		/// Returns the number of TF_Functions registered in this graph.
 		/// </summary>
 		/// <value>The number functions.</value>
-		public int NumFunctions => TF_GraphNumFunctions (Handle);
+		public int NumFunctions { get { return TF_GraphNumFunctions (Handle); } }
 
 		[DllImport (NativeBinding.TensorFlowLibrary)]
 		static extern int TF_GraphGetFunctions (TF_Graph graph, IntPtr funcs, int max_func, TF_Status status);
@@ -1401,7 +1405,7 @@ namespace TensorFlow
 	    		IntPtr len;
 	    		return TF_GraphDebugString (Handle, out len);
 		}
-    	}
+    }
 
 	//
 	// A TFGraph that will not release the undelying handle, this is used
@@ -1441,7 +1445,7 @@ namespace TensorFlow
 		public void ToFunctionDef (TFBuffer outputFuncDef, TFStatus status = null)
 		{
 			if (outputFuncDef == null)
-				throw new ArgumentNullException (nameof (outputFuncDef));
+				throw new ArgumentNullException (/*nameof*/ ("outputFuncDef"));
 			var cstatus = TFStatus.Setup (status);
 			TF_FunctionToFunctionDef (handle, outputFuncDef.Handle, cstatus.Handle);
 			cstatus.CheckMaybeRaise (status, last: false);
@@ -1468,7 +1472,7 @@ namespace TensorFlow
 		public TFFunction ImportFunctionDef (byte [] proto, TFStatus status = null)
 		{
 			if (proto == null)
-				throw new ArgumentNullException (nameof (proto));
+				throw new ArgumentNullException (/*nameof*/ ("proto"));
 
 			var cstatus = TFStatus.Setup (status);
 			unsafe {
@@ -1596,7 +1600,7 @@ namespace TensorFlow
 		internal override void NativeDispose (IntPtr handle)
 		{
 			// If you reach this, you never called FinishOperation
-			Console.WriteLine ($"TFOperationDescription({opType},{operName} was never turned into an TFOperation");
+			Console.WriteLine (String.Format("TFOperationDescription({0},{1} was never turned into an TFOperation", opType, operName));
 		}
 
 		// extern void TF_SetDevice (TF_OperationDescription *desc, const char *device);
@@ -1707,7 +1711,7 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();
 			if (attrName == null)
-				throw new ArgumentNullException (nameof (attrName));
+				throw new ArgumentNullException (/*nameof*/ ("attrName"));
 			var bytes = Encoding.UTF8.GetBytes (value);
 			var buf = Marshal.AllocHGlobal (bytes.Length + 1);
 			Marshal.Copy (bytes, 0, buf, bytes.Length);
@@ -1724,9 +1728,9 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();
 			if (attrName == null)
-				throw new ArgumentNullException (nameof (attrName));
+				throw new ArgumentNullException (/*nameof*/ ("attrName"));
 			if (values == null)
-				throw new ArgumentNullException (nameof (values));
+				throw new ArgumentNullException (/*nameof*/ ("values"));
 
 			int n = values.Length;
 			var unmanaged = new IntPtr [n];
@@ -1754,7 +1758,7 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();
 			if (attrName == null)
-				throw new ArgumentNullException (nameof (attrName));
+				throw new ArgumentNullException (/*nameof*/ ("attrName"));
 			TF_SetAttrInt (handle, attrName, value);
 			return this;
 		}
@@ -1768,9 +1772,9 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();
 			if (attrName == null)
-				throw new ArgumentNullException (nameof (attrName));
+				throw new ArgumentNullException (/*nameof*/ ("attrName"));
 			if (values == null)
-				throw new ArgumentNullException (nameof (values));
+				throw new ArgumentNullException (/*nameof*/ ("values"));
 
 			TF_SetAttrIntList (handle, attrName, values, values.Length);
 			return this;
@@ -1786,7 +1790,7 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();
 			if (attrName == null)
-				throw new ArgumentNullException (nameof (attrName));
+				throw new ArgumentNullException (/*nameof*/ ("attrName"));
 			TF_SetAttrFloat (handle, attrName, value);
 			return this;
 		}
@@ -1800,9 +1804,9 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();
 			if (attrName == null)
-				throw new ArgumentNullException (nameof (attrName));
+				throw new ArgumentNullException (/*nameof*/ ("attrName"));
 			if (values == null)
-				throw new ArgumentNullException (nameof (values));
+				throw new ArgumentNullException (/*nameof*/ ("values"));
 
 			TF_SetAttrFloatList (handle, attrName, values, values.Length);
 			return this;
@@ -1817,7 +1821,7 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();
 			if (attrName == null)
-				throw new ArgumentNullException (nameof (attrName));
+				throw new ArgumentNullException (/*nameof*/ ("attrName"));
 			TF_SetAttrBool (handle, attrName, (byte)(value ? 1 : 0));
 			return this;
 		}
@@ -1831,9 +1835,9 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();
 			if (attrName == null)
-				throw new ArgumentNullException (nameof (attrName));
+				throw new ArgumentNullException (/*nameof*/ ("attrName"));
 			if (values == null)
-				throw new ArgumentNullException (nameof (values));
+				throw new ArgumentNullException (/*nameof*/ ("values"));
 
 			TF_SetAttrBoolList (handle, attrName, values, values.Length);
 			return this;
@@ -1848,7 +1852,7 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();
 			if (attrName == null)
-				throw new ArgumentNullException (nameof (attrName));
+				throw new ArgumentNullException (/*nameof*/ ("attrName"));
 			TF_SetAttrType (handle, attrName, dataType);
 			return this;
 		}
@@ -1862,9 +1866,9 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();
 			if (attrName == null)
-				throw new ArgumentNullException (nameof (attrName));
+				throw new ArgumentNullException (/*nameof*/ ("attrName"));
 			if (dataType == null)
-				throw new ArgumentNullException (nameof (dataType));
+				throw new ArgumentNullException (/*nameof*/ ("dataType"));
 			TF_SetAttrTypeList (handle, attrName, dataType, dataType.Length);
 			return this;
 		}
@@ -1880,7 +1884,7 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();
 			if (attrName == null)
-				throw new ArgumentNullException (nameof (attrName));
+				throw new ArgumentNullException (/*nameof*/ ("attrName"));
 			if (shape == null || shape.dims  == null)
 				TF_SetAttrShape (handle, attrName, null, -1);
 			else
@@ -1897,9 +1901,9 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();
 			if (attrName == null)
-				throw new ArgumentNullException (nameof (attrName));
+				throw new ArgumentNullException (/*nameof*/ ("attrName"));
 			if (shapeList == null)
-				throw new ArgumentNullException (nameof (shapeList));
+				throw new ArgumentNullException (/*nameof*/ ("shapeList"));
 			int num_shapes = shapeList.Length;
 			var num_dims = new int [shapeList.Length];
 			unsafe
@@ -1951,7 +1955,7 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();
 			if (attrName == null)
-				throw new ArgumentNullException (nameof (attrName));
+				throw new ArgumentNullException (/*nameof*/ ("attrName"));
 			if (tensor == null)
 				throw new ArgumentNullException ("tensor");
 			var cstatus = TFStatus.Setup (status);
@@ -1969,9 +1973,9 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();
 			if (attrName == null)
-				throw new ArgumentNullException (nameof (attrName));
+				throw new ArgumentNullException (/*nameof*/ ("attrName"));
 			if (tensor == null)
-				throw new ArgumentNullException (nameof (tensor));
+				throw new ArgumentNullException (/*nameof*/ ("tensor"));
 			var cstatus = TFStatus.Setup (status);
 			var unmanaged = new IntPtr [tensor.Length];
 			for (int i = 0; i < tensor.Length; i++)
@@ -2025,9 +2029,9 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();
 			if (attrName == null)
-				throw new ArgumentNullException (nameof (attrName));
+				throw new ArgumentNullException (/*nameof*/ ("attrName"));
 			if (value == null)
-				throw new ArgumentNullException (nameof (value));
+				throw new ArgumentNullException (/*nameof*/ ("value"));
 
 			TF_SetAttrFuncName (handle, attrName, value, (IntPtr) value.Length);
 		}
@@ -2046,11 +2050,11 @@ namespace TensorFlow
 	{
 		internal IntPtr handle;
 
-	        /// <summary>
-	        /// Gets the handle to the unmanaged TF_Operation object.
-	        /// </summary>
-	        /// <value>The handle.</value>
-	        public IntPtr Handle => handle;
+	    /// <summary>
+	    /// Gets the handle to the unmanaged TF_Operation object.
+	    /// </summary>
+	    /// <value>The handle.</value>
+	    public IntPtr Handle { get { return handle; } }
 
 		// Pointer to the graph, to keep it from collecting if there are TFOperations alive.
 		internal TFGraph graph;
@@ -2069,13 +2073,13 @@ namespace TensorFlow
 		/// The name for this operation/
 		/// </summary>
 		/// <value>The name.</value>
-		public string Name => handle == IntPtr.Zero ? "<ObjectDisposed>" : TF_OperationName (handle).GetStr ();
+		public string Name { get { return handle == IntPtr.Zero ? "<ObjectDisposed>" : TF_OperationName (handle).GetStr (); } }
 
 		// extern const char * TF_OperationOpType (TF_Operation *oper);
 		[DllImport (NativeBinding.TensorFlowLibrary)]
 		static extern unsafe IntPtr TF_OperationOpType (TF_Operation oper);
 
-		public string OpType => handle == IntPtr.Zero ? "<ObjectDisposedException>" : TF_OperationOpType (handle).GetStr ();
+		public string OpType { get { return handle == IntPtr.Zero ? "<ObjectDisposedException>" : TF_OperationOpType (handle).GetStr (); } }
 
 		// extern const char * TF_OperationDevice (TF_Operation *oper);
 		[DllImport (NativeBinding.TensorFlowLibrary)]
@@ -2091,7 +2095,7 @@ namespace TensorFlow
 		/// Gets the number of outputs on this operation.
 		/// </summary>
 		/// <value>The number outputs.</value>
-		public int NumOutputs => handle == IntPtr.Zero ? -1 : TF_OperationNumOutputs (handle);
+		public int NumOutputs { get { return handle == IntPtr.Zero ? -1 : TF_OperationNumOutputs (handle); } }
 
 
 		// extern int TF_OperationOutputListLength (TF_Operation *oper, const char *arg_name, TF_Status *status);
@@ -2116,7 +2120,7 @@ namespace TensorFlow
 		/// Gets the number of inputs for this operation.
 		/// </summary>
 		/// <value>The number inputs.</value>
-		public int NumInputs => TF_OperationNumInputs (handle);
+		public int NumInputs { get { return TF_OperationNumInputs (handle); } }
 
 
 		// extern int TF_OperationInputListLength (TF_Operation *oper, const char *arg_name, TF_Status *status);
@@ -2140,7 +2144,7 @@ namespace TensorFlow
 		/// Gets the number of control inputs oto an operation
 		/// </summary>
 		/// <value>The number control inputs.</value>
-		public int NumControlInputs => TF_OperationNumControlInputs (handle);
+		public int NumControlInputs { get { return TF_OperationNumControlInputs (handle); } }
 
 		// extern int TF_OperationGetControlInputs (TF_Operation *oper, TF_Operation **control_inputs, int max_control_inputs);
 		[DllImport (NativeBinding.TensorFlowLibrary)]
@@ -2153,7 +2157,7 @@ namespace TensorFlow
 		/// <summary>
 		/// Gets the number of operations that have this operation as a control input.
 		/// </summary>
-		public int NumControlOutputs => TF_OperationNumControlOutputs (handle);
+		public int NumControlOutputs { get { return TF_OperationNumControlOutputs (handle); } }
 
 		// extern int TF_OperationGetControlOutputs (TF_Operation *oper, TF_Operation **control_outputs, int max_control_outputs);
 		[DllImport (NativeBinding.TensorFlowLibrary)]
@@ -2433,7 +2437,7 @@ namespace TensorFlow
 		public void AddControlDependency (TFOperation operation)
 		{
 			if (operation == null)
-				throw new ArgumentNullException (nameof (operation));
+				throw new ArgumentNullException (/*nameof*/ ("operation"));
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();
 			
@@ -2455,7 +2459,7 @@ namespace TensorFlow
 		public void AddReturnOutput (string operName, int index)
 		{
 			if (operName == null)
-				throw new ArgumentNullException (nameof (operName));
+				throw new ArgumentNullException (/*nameof*/ ("operName"));
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();
 			TF_ImportGraphDefOptionsAddReturnOutput (handle, operName, index);
@@ -2493,11 +2497,11 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();			
 			if (srcName == null)
-				throw new ArgumentNullException (nameof (srcName));
+				throw new ArgumentNullException (/*nameof*/ ("srcName"));
 			if (destination == null)
-				throw new ArgumentNullException (nameof (destination));
+				throw new ArgumentNullException (/*nameof*/ ("destination"));
 			if (destination.Handle == IntPtr.Zero)
-				throw new ObjectDisposedException (nameof (destination));
+				throw new ObjectDisposedException (/*nameof*/ ("destination"));
 			TF_ImportGraphDefOptionsRemapControlDependency (handle, srcName, destination.Handle);
 		}
 
@@ -2690,13 +2694,13 @@ namespace TensorFlow
 		public TFSession FromSavedModel (TFSessionOptions sessionOptions, TFBuffer runOptions, string exportDir, string [] tags, TFGraph graph, TFBuffer metaGraphDef, TFStatus status = null)
 		{
 			if (graph == null)
-				throw new ArgumentNullException (nameof (graph));
+				throw new ArgumentNullException (/*nameof*/ ("graph"));
 			if (tags == null)
-				throw new ArgumentNullException (nameof (tags));
+				throw new ArgumentNullException (/*nameof*/ ("tags"));
 			if (exportDir == null)
-				throw new ArgumentNullException (nameof (exportDir));
+				throw new ArgumentNullException (/*nameof*/ ("exportDir"));
 			if (metaGraphDef == null)
-				throw new ArgumentNullException (nameof (metaGraphDef));
+				throw new ArgumentNullException (/*nameof*/ ("metaGraphDef"));
 			var cstatus = TFStatus.Setup (status);
 			unsafe
 			{
@@ -2807,7 +2811,7 @@ namespace TensorFlow
 			public Runner AddInput (TFOutput input, TFTensor value)
 			{
 				if (value == null)
-					throw new ArgumentNullException (nameof (value));
+					throw new ArgumentNullException (/*nameof*/ ("value"));
 				inputs.Add (input);
 				inputValues.Add (value);
 				return this;
@@ -2822,7 +2826,7 @@ namespace TensorFlow
 			public Runner AddInput (string input, TFTensor value)
 			{
 				if (value == null)
-					throw new ArgumentNullException (nameof (value));
+					throw new ArgumentNullException (/*nameof*/ ("TFTensor"));
 				inputs.Add (ParseOutput (input));
 				inputValues.Add (value);
 				return this;
@@ -2847,7 +2851,8 @@ namespace TensorFlow
 				var p = operation.IndexOf (':');
 				if (p != -1 && p != operation.Length - 1){
 					var op = operation.Substring (0, p);
-					if (int.TryParse (operation.Substring (p + 1), out var idx)){
+                    int idx;
+					if (int.TryParse (operation.Substring (p + 1), out idx)){
 						return session.Graph [op] [idx];
 					}
 				}
@@ -2999,11 +3004,11 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();			
 			if (inputs == null)
-				throw new ArgumentNullException (nameof (inputs));
+				throw new ArgumentNullException (/*nameof*/ ("inputs"));
 			if (inputValues == null)
-				throw new ArgumentNullException (nameof (inputValues));
+				throw new ArgumentNullException (/*nameof*/ ("inputValues"));
 			if (outputs == null)
-				throw new ArgumentNullException (nameof (outputs));
+				throw new ArgumentNullException (/*nameof*/ ("outputs"));
 			int iLen = inputs.Length;
 			if (iLen != inputValues.Length)
 				throw new ArgumentException ("inputs and inputValues have different lengths", "inputs");
@@ -3085,11 +3090,11 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();			
 			if (inputs == null)
-				throw new ArgumentNullException (nameof (inputs));
+				throw new ArgumentNullException (/*nameof*/ ("inputs"));
 			if (outputs == null)
-				throw new ArgumentNullException (nameof (outputs));
+				throw new ArgumentNullException (/*nameof*/ ("outputs"));
 			if (targetOpers == null)
-				throw new ArgumentNullException (nameof (targetOpers));
+				throw new ArgumentNullException (/*nameof*/ ("targetOpers"));
 			
 			IntPtr returnHandle;
 			var cstatus = TFStatus.Setup (status);
@@ -3111,13 +3116,13 @@ namespace TensorFlow
 			if (handle == IntPtr.Zero)
 				ObjectDisposedException ();			
 			if (inputs == null)
-				throw new ArgumentNullException (nameof (inputs));
+				throw new ArgumentNullException (/*nameof*/ ("inputs"));
 			if (inputValues == null)
-				throw new ArgumentNullException (nameof (inputValues));
+				throw new ArgumentNullException (/*nameof*/ ("inputValues"));
 			if (outputs == null)
-				throw new ArgumentNullException (nameof (outputs));
+				throw new ArgumentNullException (/*nameof*/ ("outputs"));
 			if (targetOpers == null)
-				throw new ArgumentNullException (nameof (targetOpers));
+				throw new ArgumentNullException (/*nameof*/ ("targetOpers"));
 			int iLen = inputs.Length;
 			if (iLen != inputValues.Length)
 				throw new ArgumentException ("inputs and inputValues have different lengths", "inputs");
@@ -3569,7 +3574,7 @@ namespace TensorFlow
 		[DllImport (NativeBinding.TensorFlowLibrary)]
 		static extern TFDataType TF_OperationInputType (TFInput oper_in);
 
-		public TFDataType InputType => TF_OperationInputType (this);
+        public TFDataType InputType { get { return TF_OperationInputType(this); } }
 
 	}
 
@@ -3609,7 +3614,7 @@ namespace TensorFlow
 		/// <remarks>
 		/// This number can change when new operations are added to the graph.
 		/// </remarks>
-		public int NumConsumers => TF_OperationOutputNumConsumers (this);
+		public int NumConsumers { get { return TF_OperationOutputNumConsumers (this); } }
 
 		// extern TF_DataType TF_OperationOutputType (TF_Output oper_out);
 		[DllImport (NativeBinding.TensorFlowLibrary)]
@@ -3619,7 +3624,7 @@ namespace TensorFlow
 		/// Gets the type of the output.
 		/// </summary>
 		/// <value>The type of the output.</value>
-		public TFDataType OutputType => LLOperation == IntPtr.Zero ? TFDataType.Unknown : TF_OperationOutputType (this);
+		public TFDataType OutputType { get { return LLOperation == IntPtr.Zero ? TFDataType.Unknown : TF_OperationOutputType (this); } }
 
 		/// <summary>
 		/// Initializes a new TFOutput instance.
@@ -3629,7 +3634,7 @@ namespace TensorFlow
 		public TFOutput (TFOperation operation, int index = 0)
 		{
 			if (operation == null)
-				throw new ArgumentNullException (nameof (operation));
+				throw new ArgumentNullException (/*nameof*/ ("operation"));
 			LLOperation = operation.handle;
 			Index = index;
 		}
@@ -3676,7 +3681,7 @@ namespace TensorFlow
 		/// The associated operation.
 		/// </summary>
 		/// <value>The operation.</value>
-		public TFOperation Operation => new TFOperation (null, LLOperation);
+		public TFOperation Operation { get { return new TFOperation (null, LLOperation); } }
 
 		/// <summary>
 		/// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:TensorFlow.TFOutput"/>.
@@ -3751,7 +3756,7 @@ namespace TensorFlow
 	public struct TFAttributeMetadata
 	{
 		byte isList;
-		public bool IsList => isList != 0;
+		public bool IsList { get { return isList != 0; } }
 		public long ListSize;
 		public TFAttributeType Type;
 		public long TotalSize;
@@ -3762,7 +3767,7 @@ namespace TensorFlow
 		/// <returns>A <see cref="T:System.String"/> that represents the current <see cref="T:TensorFlow.TFAttributeMetadata"/>.</returns>
 		public override string ToString ()
 		{
-			return string.Format ($"[TFAttributeMetadata IsList={IsList} ListSize={ListSize} Type={Type} TotalSize={TotalSize}]");
+			return string.Format ("[TFAttributeMetadata IsList={0} ListSize={1} Type={2} TotalSize={3}]", IsList, ListSize, Type, TotalSize);
 		}
 	}
 
@@ -3804,13 +3809,13 @@ namespace TensorFlow
 		/// Represents an unknown number of dimensions in the tensor.
 		/// </summary>
 		/// <value>The unknown.</value>
-		public static TFShape Unknown => new TFShape (null);
+		public static TFShape Unknown { get { return new TFShape (null); } }
 
 		/// <summary>
 		/// This shape is used to represent scalar values.
 		/// </summary>
 		/// <value>The scalar.</value>
-		public static TFShape Scalar => new TFShape (new long [0]);
+		public static TFShape Scalar { get { return new TFShape (new long [0]); } }
 
 		internal long [] dims;
 
@@ -3834,13 +3839,13 @@ namespace TensorFlow
 		/// </summary>
 		/// <returns>The length, -1 for shapes that have an unknown dimension.</returns>
 		/// <param name="dimension">Dimension.</param>
-		public int GetLength (int dimension) => dims == null ? -1 : dims.GetLength (dimension);
+		public int GetLength (int dimension) { return dims == null ? -1 : dims.GetLength (dimension); }
 
 		/// <summary>
 		/// Number of dimensions represented by this shape.
 		/// </summary>
 		/// <value>The number dimensions, -1 if the number of dimensions is unknown, 0 if the shape represent a scalar, 1 for a vector, 2 for a matrix and so on..</value>
-		public int NumDimensions => dims == null ? -1 : dims.Length;
+		public int NumDimensions { get { return dims == null ? -1 : dims.Length; } }
 
 		/// <summary>
 		/// Gets a value indicating whether all the dimensions in the <see cref="T:TensorFlow.TFShape"/> are fully specified.
@@ -3917,7 +3922,7 @@ namespace TensorFlow
 		/// Gets the dimensions for the specified index.
 		/// </summary>
 		/// <param name="idx">Index.</param>
-		public long this [int idx] => dims [idx];
+		public long this [int idx] { get { return dims [idx]; } }
 
 		/// <summary>
 		/// Returns the shape as a 1-dimensional tensor with each element corresponding to the specified shape dimension.

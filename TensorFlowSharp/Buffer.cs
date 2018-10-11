@@ -133,7 +133,7 @@ namespace TensorFlow
 		static TFBuffer ()
 		{
 			FreeBlockDelegate = FreeBlock;
-			FreeBufferFunc = Marshal.GetFunctionPointerForDelegate<BufferReleaseFunc> (FreeBlockDelegate);
+			FreeBufferFunc = Marshal.GetFunctionPointerForDelegate (FreeBlockDelegate);
 		}
 
 
@@ -173,7 +173,7 @@ namespace TensorFlow
 			}
 		}
 
-		unsafe internal LLBuffer* LLBuffer => (LLBuffer*)handle;
+        unsafe internal LLBuffer* LLBuffer { get { return (LLBuffer*)handle; } }
 
 		// extern void TF_DeleteBuffer (TF_Buffer *);
 		[DllImport (NativeBinding.TensorFlowLibrary)]
