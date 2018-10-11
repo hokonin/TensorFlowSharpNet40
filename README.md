@@ -24,10 +24,10 @@ VisualStudio2010 にインストールできる [NuGet パッケージ マネー
 1. VisualStudio2010 の `ツール`>`拡張機能マネージャー` から NuGet パッケージ マネージャー をインストール
 1. `TensorFlorSharpNet40.sln` を開き、NuGet パッケージ マネージャー から `NuGet.CommandLine` をインストール
 1. コマンドプロンプトを開き、ValueTuple と TensorFlowSharp のパッケージを復元
-```
-> cd [TensorFlowSharpNet40.sln のあるフォルダ]
-> packages\NuGet.CommandLine.4.7.1\tools\NuGet.exe restore
-```
+    ```
+    > cd [TensorFlowSharpNet40.sln のあるフォルダ]
+    > packages\NuGet.CommandLine.4.7.1\tools\NuGet.exe restore
+    ```
 1. ソリューションをビルド
 
 ## License
