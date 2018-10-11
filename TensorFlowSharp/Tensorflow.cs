@@ -1,4 +1,4 @@
-﻿﻿//
+﻿//
 // TensorFlow.cs; Bindings to the TensorFlow C API for .NET
 // 
 // Authors:
@@ -130,7 +130,7 @@ namespace TensorFlow
 		public static TFBuffer GetAllRegisteredKernels (string name, TFStatus status = null)
 		{
 			if (name == null)
-				throw new ArgumentNullException (nameof (name));
+				throw new ArgumentNullException (/*nameof*/ ("name"));
 			var cstatus = TFStatus.Setup (status);
 
 			var r = TF_GetRegisteredKernelsForOp (name, cstatus.Handle);
@@ -1156,12 +1156,12 @@ namespace TensorFlow
 		public TFOutput [] AddGradients (string prefix, TFOutput [] y, TFOutput [] x, TFOutput [] dx = null, TFStatus status = null)
 		{
 			if (y == null)
-				throw new ArgumentNullException (nameof (y));
+				throw new ArgumentNullException (/*nameof*/ ("y"));
 			if (x == null)
-				throw new ArgumentNullException (nameof (x));
+				throw new ArgumentNullException (/*nameof*/ ("x"));
 			if (dx != null) {
 				if (dx.Length != y.Length)
-					throw new ArgumentException ("If dx is not null, the size of the gradients must match the size of y", nameof (dx));
+					throw new ArgumentException ("If dx is not null, the size of the gradients must match the size of y", /*nameof*/ ("dx"));
 			}
 
 			var cstatus = TFStatus.Setup (status);
@@ -1489,7 +1489,7 @@ namespace TensorFlow
 		[DllImport (NativeBinding.TensorFlowLibrary)]
 		static extern unsafe IntPtr TF_FunctionName (IntPtr handle);
 
-		public string Name => Marshal.PtrToStringAnsi (handle);
+        public string Name { get { return Marshal.PtrToStringAnsi (handle); } }
 	}
 
 	/// <summary>
